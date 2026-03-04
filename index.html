@@ -466,7 +466,7 @@
     </div>
 
     <div class="form-row">
-      <label>Telefoonnummer</label>
+      <label>Telefoonnummer <span id="phone-required-label" style="display:none;color:var(--orange);font-size:0.85rem;">(verplicht bij tikkie)</span></label>
       <input type="tel" id="phone" placeholder="06 – xxxxxxxx">
     </div>
 
@@ -498,13 +498,8 @@
       </div>
 
       <div id="cupcake-flavor-row" style="display:none; margin-top:10px;">
-        <label style="margin-bottom:7px;">Smaakkeuze cupcakes *</label>
-        <select id="cupcake-flavor">
-          <option value="">— Kies je smaak —</option>
-          <option value="2x stroopwafel">🍯 2× Stroopwafel</option>
-          <option value="2x chocolade">🍫 2× Chocolade</option>
-          <option value="1x stroopwafel + 1x chocolade">🍯🍫 1× Stroopwafel + 1× Chocolade</option>
-        </select>
+        <label style="margin-bottom:7px;">Smaakkeuze per set *</label>
+        <div id="cupcake-flavors-container"></div>
       </div>
     </div>
 
@@ -535,7 +530,7 @@
       <label>Betaalvoorkeur *</label>
       <select id="payment" required>
         <option value="">— Kies hoe je wilt betalen —</option>
-        <option value="op locatie">💵 Betalen op locatie (contant of pin)</option>
+        <option value="op locatie">💵 Betalen op locatie (contant, gepast graag)</option>
         <option value="tikkie vooraf">📱 Tikkie vooraf ontvangen</option>
       </select>
     </div>
@@ -579,13 +574,37 @@
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
+  function flavorSelectHTML(i) {
+    return `<select id="cupcake-flavor-${i}" style="margin-bottom:8px;">
+      <option value="">— Set ${i}: kies smaak —</option>
+      <option value="2x stroopwafel">🍯 2× Stroopwafel</option>
+      <option value="2x chocolade">🍫 2× Chocolade</option>
+      <option value="1x stroopwafel + 1x chocolade">🍯🍫 1× Stroopwafel + 1× Chocolade</option>
+    </select>`;
+  }
+
+  function updateFlavorSelects() {
+    const container = document.getElementById('cupcake-flavors-container');
+    const row = document.getElementById('cupcake-flavor-row');
+    if (qty.cup === 0) { row.style.display = 'none'; container.innerHTML = ''; return; }
+    row.style.display = 'block';
+    // Keep existing values, only add/remove selects as needed
+    const current = container.querySelectorAll('select').length;
+    if (qty.cup > current) {
+      for (let i = current + 1; i <= qty.cup; i++) {
+        container.insertAdjacentHTML('beforeend', flavorSelectHTML(i));
+      }
+    } else {
+      while (container.querySelectorAll('select').length > qty.cup) {
+        container.removeChild(container.lastChild);
+      }
+    }
+  }
+
   function changeQty(item, delta) {
     qty[item] = Math.max(0, qty[item] + delta);
     document.getElementById('qty-' + item).textContent = qty[item];
-    if (item === 'cup') {
-      document.getElementById('cupcake-flavor-row').style.display = qty.cup > 0 ? 'block' : 'none';
-      if (qty.cup === 0) document.getElementById('cupcake-flavor').value = '';
-    }
+    if (item === 'cup') updateFlavorSelects();
     updateTotal();
   }
 
@@ -595,28 +614,55 @@
     document.getElementById('total').textContent = '€ ' + total.toFixed(2).replace('.', ',');
   }
 
+  // Show/hide phone required label based on payment choice
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('payment').addEventListener('change', function() {
+      const isTikkie = this.value === 'tikkie vooraf';
+      document.getElementById('phone-required-label').style.display = isTikkie ? 'inline' : 'none';
+      document.getElementById('phone').style.borderColor = isTikkie ? 'var(--orange)' : '#e8eef6';
+    });
+  });
+
   function submitOrder() {
     const fname = document.getElementById('fname').value.trim();
     const lname = document.getElementById('lname').value.trim();
     const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
     const day = document.getElementById('day').value;
+    const dagdeel = document.getElementById('dagdeel').value;
+    const payment = document.getElementById('payment').value;
     const totalQty = qty.kruid + qty.cup;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
-    const flavor = document.getElementById('cupcake-flavor').value;
 
     if (!fname || !lname) { alert('Vul je naam in.'); return; }
     if (!email || !email.includes('@')) { alert('Vul een geldig e-mailadres in.'); return; }
     if (totalQty === 0) { alert('Voeg minimaal één product toe aan je bestelling.'); return; }
-    if (qty.cup > 0 && !flavor) { alert('Kies een smaak voor je cupcakes.'); return; }
+
+    // Check all flavor selects filled
+    if (qty.cup > 0) {
+      for (let i = 1; i <= qty.cup; i++) {
+        if (!document.getElementById(`cupcake-flavor-${i}`).value) {
+          alert(`Kies een smaak voor set ${i}.`); return;
+        }
+      }
+    }
+
     if (!day) { alert('Kies een voorkeursdag voor afhalen.'); return; }
-    const dagdeel = document.getElementById('dagdeel').value;
-    const payment = document.getElementById('payment').value;
     if (!dagdeel) { alert('Kies een dagdeel (ochtend of middag).'); return; }
     if (!payment) { alert('Kies je betaalvoorkeur.'); return; }
+    if (payment === 'tikkie vooraf' && !phone) { alert('Vul je telefoonnummer in — dit is nodig om het tikkie te sturen.'); return; }
 
-    const phone = document.getElementById('phone').value;
     const dayText = document.getElementById('day').options[document.getElementById('day').selectedIndex].text;
     const total = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
+
+    // Build flavor summary
+    let flavorLines = '';
+    if (qty.cup > 0) {
+      for (let i = 1; i <= qty.cup; i++) {
+        const f = document.getElementById(`cupcake-flavor-${i}`).value;
+        flavorLines += `\n    Set ${i}: ${f}`;
+      }
+    }
 
     const body = [
       `Naam: ${fname} ${lname}`,
@@ -625,11 +671,11 @@
       '',
       `Bestelling:`,
       qty.kruid > 0 ? `  Kruidkoek x${qty.kruid} = € ${(qty.kruid * 7.5).toFixed(2)}` : '',
-      qty.cup > 0 ? `  2 Cupcakes x${qty.cup} (${flavor}) = € ${(qty.cup * 6.0).toFixed(2)}` : '',
+      qty.cup > 0 ? `  2 Cupcakes x${qty.cup} = € ${(qty.cup * 6.0).toFixed(2)}${flavorLines}` : '',
       donation > 0 ? `  Extra donatie = € ${donation.toFixed(2)}` : '',
       `  Totaal: € ${total.toFixed(2)}`,
       '',
-      `Voorkeursdag afhalen: ${dayText} – ${dagdeel}`,
+      `Afhalen: ${dayText} – ${dagdeel}`,
       `Betaalvoorkeur: ${payment}`,
     ].filter(l => l !== undefined).join('\n');
 
