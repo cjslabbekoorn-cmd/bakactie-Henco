@@ -496,6 +496,16 @@
           <button class="qty-btn" onclick="changeQty('cup', 1)">+</button>
         </div>
       </div>
+
+      <div id="cupcake-flavor-row" style="display:none; margin-top:10px;">
+        <label style="margin-bottom:7px;">Smaakkeuze cupcakes *</label>
+        <select id="cupcake-flavor">
+          <option value="">— Kies je smaak —</option>
+          <option value="2x stroopwafel">🍯 2× Stroopwafel</option>
+          <option value="2x chocolade">🍫 2× Chocolade</option>
+          <option value="1x stroopwafel + 1x chocolade">🍯🍫 1× Stroopwafel + 1× Chocolade</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-row">
@@ -553,6 +563,10 @@
   function changeQty(item, delta) {
     qty[item] = Math.max(0, qty[item] + delta);
     document.getElementById('qty-' + item).textContent = qty[item];
+    if (item === 'cup') {
+      document.getElementById('cupcake-flavor-row').style.display = qty.cup > 0 ? 'block' : 'none';
+      if (qty.cup === 0) document.getElementById('cupcake-flavor').value = '';
+    }
     updateTotal();
   }
 
@@ -569,10 +583,12 @@
     const day = document.getElementById('day').value;
     const totalQty = qty.kruid + qty.cup;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
+    const flavor = document.getElementById('cupcake-flavor').value;
 
     if (!fname || !lname) { alert('Vul je naam in.'); return; }
     if (!email || !email.includes('@')) { alert('Vul een geldig e-mailadres in.'); return; }
     if (totalQty === 0) { alert('Voeg minimaal één product toe aan je bestelling.'); return; }
+    if (qty.cup > 0 && !flavor) { alert('Kies een smaak voor je cupcakes.'); return; }
     if (!day) { alert('Kies een voorkeursdag voor afhalen.'); return; }
 
     const phone = document.getElementById('phone').value;
@@ -586,7 +602,7 @@
       '',
       `Bestelling:`,
       qty.kruid > 0 ? `  Kruidkoek x${qty.kruid} = € ${(qty.kruid * 7.5).toFixed(2)}` : '',
-      qty.cup > 0 ? `  2 Cupcakes x${qty.cup} = € ${(qty.cup * 6.0).toFixed(2)}` : '',
+      qty.cup > 0 ? `  2 Cupcakes x${qty.cup} (${flavor}) = € ${(qty.cup * 6.0).toFixed(2)}` : '',
       donation > 0 ? `  Extra donatie = € ${donation.toFixed(2)}` : '',
       `  Totaal: € ${total.toFixed(2)}`,
       '',
