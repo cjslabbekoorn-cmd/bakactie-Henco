@@ -233,21 +233,65 @@
 
     /* ── PRINT STYLES ── */
     @media print {
-      @page { size: A4; margin: 12mm; }
+      @page { size: A4; margin: 0; }
       body { background: #fff; }
       .toolbar, .filter-bar, .stats-bar, .checkbox-row { display: none !important; }
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10mm;
-        padding: 0;
-      }
+
+      .grid { display: block; padding: 0; }
+
       .pakbon {
-        border: 1.5px solid #ccc;
-        box-shadow: none;
-        border-radius: 6px;
+        width: 100%;
+        height: 100vh;
+        min-height: 297mm;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+        display: flex;
+        flex-direction: column;
       }
-      .pakbon.hidden { display: none !important; }
+
+      .pakbon-header { padding: 18mm 16mm 12mm; flex-shrink: 0; }
+      .pakbon-header .naam { font-size: 2rem; }
+      .pakbon-header .tijdstip { font-size: 0.9rem; margin-top: 5px; }
+      .betaling-badge { font-size: 1rem; padding: 10px 20px; border-radius: 30px; align-self: flex-start; margin-top: 4px; }
+
+      .pakbon-body {
+        padding: 8mm 16mm;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6mm;
+      }
+
+      .products { margin-bottom: 0; }
+      .product-row { padding: 12px 0; border-bottom: 1.5px solid #e8eef6; }
+      .product-qty { width: 40px; height: 40px; font-size: 1.15rem; }
+      .product-naam { font-size: 1.1rem; }
+      .product-prijs { font-size: 1.1rem; }
+      .smaak-tag { font-size: 0.85rem; padding: 4px 10px; margin-top: 4px; }
+
+      .meta-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 0;
+        border: 1.5px solid #e8eef6;
+        border-radius: 8px;
+        padding: 14px;
+      }
+      .meta-label { font-size: 0.75rem; }
+      .meta-value { font-size: 1rem; }
+
+      .pakbon-footer {
+        padding: 16px 16mm;
+        border-top: 3px dashed #ccc;
+        flex-shrink: 0;
+        margin-top: auto;
+      }
+      .totaal-label { font-size: 0.85rem; }
+      .totaal-bedrag { font-size: 2rem; }
+      .donatie-badge { font-size: 0.9rem; padding: 7px 14px; }
     }
   </style>
 </head>
