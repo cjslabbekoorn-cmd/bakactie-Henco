@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pakbonnen – Bakactie Alpe d'HuZes</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1a4f8a;
+      --orange: #f07d00;
+      --green: #1a6e3c;
+      --red: #c0392b;
+      --light: #f5f7fb;
+      --border: #dde4f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--light);
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* ── SCHERM UI ── */
+    @media screen {
+      .toolbar {
+        background: var(--blue);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      }
+      .toolbar h1 {
+        font-family: 'DM Serif Display', serif;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 400;
+      }
+      .toolbar p { color: #aac4e8; font-size: 0.8rem; margin-top: 2px; }
+      .toolbar-right { display: flex; gap: 10px; align-items: center; }
+      .btn {
+        padding: 9px 18px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: opacity 0.15s;
+      }
+      .btn:hover { opacity: 0.85; }
+      .btn-print { background: var(--orange); color: #fff; }
+      .btn-reload { background: rgba(255,255,255,0.15); color: #fff; }
+      .filter-bar {
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 32px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .filter-bar label { font-size: 0.8rem; font-weight: 600; color: #888; }
+      .filter-bar select, .filter-bar input {
+        padding: 6px 10px;
+        border: 1.5px solid var(--border);
+        border-radius: 6px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.82rem;
+        background: #fafbfd;
+      }
+      .stats-bar {
+        padding: 16px 32px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .stat {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 20px;
+        min-width: 140px;
+      }
+      .stat-label { font-size: 0.72rem; font-weight: 700; color: #aaa; letter-spacing: 0.5px; text-transform: uppercase; }
+      .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--blue); margin-top: 2px; }
+      .stat-value.orange { color: var(--orange); }
+      .stat-value.green { color: var(--green); }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 20px;
+        padding: 0 32px 40px;
+      }
+      #loading, #error-msg {
+        text-align: center;
+        padding: 60px 32px;
+        color: #888;
+        font-size: 1rem;
+      }
+      #error-msg { color: var(--red); }
+    }
+
+    /* ── PAKBON KAART ── */
+    .pakbon {
+      background: #fff;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      page-break-inside: avoid;
+    }
+    .pakbon-header {
+      background: var(--blue);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .pakbon-header .naam {
+      font-family: 'DM Serif Display', serif;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    .pakbon-header .tijdstip {
+      color: #aac4e8;
+      font-size: 0.75rem;
+      margin-top: 3px;
+    }
+    .betaling-badge {
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-tikkie { background: #fff3e0; color: var(--orange); }
+    .badge-contant { background: #e8f5e9; color: var(--green); }
+    .badge-betaald { background: #e8f5e9; color: var(--green); }
+
+    .pakbon-body { padding: 16px 18px; }
+
+    .products { margin-bottom: 12px; }
+    .product-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f4fa;
+    }
+    .product-row:last-child { border-bottom: none; }
+    .product-qty {
+      background: var(--blue);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .product-naam { font-weight: 600; font-size: 0.9rem; flex: 1; }
+    .product-prijs { font-weight: 700; color: var(--orange); font-size: 0.9rem; }
+    .smaak-tag {
+      display: inline-block;
+      background: #eef2f8;
+      color: #555;
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      margin: 3px 3px 0 0;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .meta-item { }
+    .meta-label { font-size: 0.68rem; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.4px; }
+    .meta-value { font-size: 0.85rem; color: #333; margin-top: 1px; font-weight: 500; }
+
+    .pakbon-footer {
+      border-top: 2px dashed var(--border);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafbfd;
+    }
+    .totaal-label { font-size: 0.75rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
+    .totaal-bedrag { font-size: 1.3rem; font-weight: 700; color: var(--blue); }
+    .donatie-badge {
+      background: #e8f0fb;
+      color: var(--blue);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+    .checkbox-row input[type=checkbox] {
+      width: 18px; height: 18px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+    .checkbox-row label { font-size: 0.82rem; font-weight: 600; color: #555; cursor: pointer; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      @page { size: A4; margin: 12mm; }
+      body { background: #fff; }
+      .toolbar, .filter-bar, .stats-bar, .checkbox-row { display: none !important; }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10mm;
+        padding: 0;
+      }
+      .pakbon {
+        border: 1.5px solid #ccc;
+        box-shadow: none;
+        border-radius: 6px;
+      }
+      .pakbon.hidden { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toolbar" id="toolbar">
+  <div>
+    <h1>📦 Pakbonnen – Bakactie Alpe d'HuZes</h1>
+    <p id="last-updated">Laden...</p>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn btn-reload" onclick="loadCSV()">↺ Vernieuwen</button>
+    <button class="btn btn-print" onclick="window.print()">🖨️ Afdrukken</button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <label>Dag:</label>
+  <select id="filter-dag" onchange="renderPakbonnen()">
+    <option value="">Alle dagen</option>
+  </select>
+  <label>Betaling:</label>
+  <select id="filter-betaling" onchange="renderPakbonnen()">
+    <option value="">Alles</option>
+    <option value="tikkie">Tikkie (betaald)</option>
+    <option value="contant">Contant (nog betalen)</option>
+  </select>
+  <label>Zoek:</label>
+  <input type="text" id="filter-zoek" placeholder="Naam of email..." oninput="renderPakbonnen()" style="width:200px">
+</div>
+
+<div class="stats-bar" id="stats-bar"></div>
+<div id="loading">⏳ Bestellingen laden...</div>
+<div id="error-msg" style="display:none"></div>
+<div class="grid" id="grid" style="display:none"></div>
+
+<script>
+const CSV_URL = 'https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now();
+let orders = [];
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const result = [];
+  for (let i = 1; i < lines.length; i++) { // sla headerrij over
+    const line = lines[i].trim();
+    if (!line) continue;
+    const cols = [];
+    let inQuote = false, cur = '';
+    for (let c = 0; c < line.length; c++) {
+      const ch = line[c];
+      if (ch === '"') { inQuote = !inQuote; }
+      else if (ch === ',' && !inQuote) { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur);
+    if (cols.length >= 8) result.push(cols);
+  }
+  return result;
+}
+
+async function loadCSV() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('grid').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'none';
+  try {
+    const res = await fetch('https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now());
+    if (!res.ok) throw new Error('Kon CSV niet laden');
+    const text = await res.text();
+    orders = parseCSV(text);
+    document.getElementById('last-updated').textContent = 'Bijgewerkt: ' + new Date().toLocaleString('nl-NL');
+
+    // Vul dag-filter
+    const dagen = [...new Set(orders.map(o => o[8] || '').filter(Boolean))].sort();
+    const dagSel = document.getElementById('filter-dag');
+    dagSel.innerHTML = '<option value="">Alle dagen</option>';
+    dagen.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d;
+      dagSel.appendChild(opt);
+    });
+
+    renderPakbonnen();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('grid').style.display = 'grid';
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').textContent = '❌ Fout: ' + e.message;
+  }
+}
+
+function renderPakbonnen() {
+  const dag = document.getElementById('filter-dag').value.toLowerCase();
+  const betaling = document.getElementById('filter-betaling').value.toLowerCase();
+  const zoek = document.getElementById('filter-zoek').value.toLowerCase();
+
+  const filtered = orders.filter(o => {
+    if (dag && !(o[8] || '').toLowerCase().includes(dag)) return false;
+    if (betaling === 'tikkie' && !(o[10] || '').toLowerCase().includes('tikkie')) return false;
+    if (betaling === 'contant' && !(o[10] || '').toLowerCase().includes('contant')) return false;
+    if (zoek && !(o[1] || '').toLowerCase().includes(zoek) && !(o[2] || '').toLowerCase().includes(zoek)) return false;
+    return true;
+  });
+
+  // Stats
+  const totaal = filtered.reduce((s, o) => s + (parseFloat(o[7]) || 0), 0);
+  const tikkieCount = filtered.filter(o => (o[10] || '').toLowerCase().includes('tikkie')).length;
+  const contantCount = filtered.filter(o => (o[10] || '').toLowerCase().includes('contant')).length;
+  const donaties = filtered.reduce((s, o) => s + (parseFloat(o[12]) || 0), 0);
+
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-label">Bestellingen</div><div class="stat-value">${filtered.length}</div></div>
+    <div class="stat"><div class="stat-label">Totaal omzet</div><div class="stat-value orange">€ ${totaal.toFixed(2).replace('.', ',')}</div></div>
+    <div class="stat"><div class="stat-label">Tikkie betaald</div><div class="stat-value green">${tikkieCount}</div></div>
+    <div class="stat"><div class="stat-label">Contant</div><div class="stat-value orange">${contantCount}</div></div>
+    ${donaties > 0 ? `<div class="stat"><div class="stat-label">💙 Donaties</div><div class="stat-value green">€ ${donaties.toFixed(2).replace('.', ',')}</div></div>` : ''}
+  `;
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = filtered.length === 0
+    ? '<p style="color:#aaa;padding:40px;grid-column:1/-1;text-align:center">Geen bestellingen gevonden.</p>'
+    : filtered.map((o, i) => pakbonHTML(o, i)).join('');
+}
+
+function pakbonHTML(o, i) {
+  const [tijdstip, naam, email, tel, kruid, cup, smaken, totaal, dag, dagdeel, betaling, opmerkingen, donatie] = o;
+  const isTikkie = (betaling || '').toLowerCase().includes('tikkie');
+  const badgeClass = isTikkie ? 'badge-tikkie' : 'badge-contant';
+  const badgeText = isTikkie ? '📱 Tikkie – betaald' : '💵 Contant – nog betalen';
+
+  let producten = '';
+  if (parseInt(kruid) > 0) {
+    producten += `<div class="product-row">
+      <div class="product-qty">${kruid}</div>
+      <div class="product-naam">🥮 Kruidkoek</div>
+      <div class="product-prijs">€ ${(parseInt(kruid) * 7.5).toFixed(2).replace('.', ',')}</div>
+    </div>`;
+  }
+  if (parseInt(cup) > 0) {
+    const smaakTags = (smaken || '').split('|').map(s => s.trim()).filter(Boolean)
+      .map(s => `<span class="smaak-tag">${s}</span>`).join('');
+    producten += `<div class="product-row">
+      <div class="product-qty">${cup}</div>
+      <div class="product-naam">🧁 Cupcakes<br><span style="font-weight:400;font-size:0.78rem;color:#888">${smaakTags}</span></div>
+      <div class="product-prijs">€ ${(parseInt(cup) * 6).toFixed(2).replace('.', ',')}</div>
+    </div>`;
+  }
+
+  const donatieHTML = parseFloat(donatie) > 0
+    ? `<span class="donatie-badge">💙 Donatie € ${parseFloat(donatie).toFixed(2).replace('.', ',')}</span>`
+    : '';
+
+  const opmHTML = opmerkingen
+    ? `<div class="meta-item" style="grid-column:1/-1"><div class="meta-label">💬 Opmerkingen</div><div class="meta-value" style="color:#e67e00">${opmerkingen}</div></div>`
+    : '';
+
+  return `<div class="pakbon" id="pakbon-${i}">
+    <div class="pakbon-header">
+      <div>
+        <div class="naam">${naam}</div>
+        <div class="tijdstip">${tijdstip}</div>
+      </div>
+      <span class="betaling-badge ${badgeClass}">${badgeText}</span>
+    </div>
+    <div class="pakbon-body">
+      <div class="products">${producten}</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">📅 Afhaaldag</div><div class="meta-value">${dag}</div></div>
+        <div class="meta-item"><div class="meta-label">⏰ Dagdeel</div><div class="meta-value">${dagdeel}</div></div>
+        <div class="meta-item"><div class="meta-label">📧 Email</div><div class="meta-value" style="font-size:0.78rem">${email}</div></div>
+        <div class="meta-item"><div class="meta-label">📱 Telefoon</div><div class="meta-value">${tel || '–'}</div></div>
+        ${opmHTML}
+      </div>
+    </div>
+    <div class="pakbon-footer">
+      <div>
+        <div class="totaal-label">Totaalbedrag</div>
+        <div class="totaal-bedrag">€ ${(parseFloat(totaal) || 0).toFixed(2).replace('.', ',')}</div>
+      </div>
+      ${donatieHTML}
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="check-${i}" onchange="toggleAfgehandeld(${i})">
+      <label for="check-${i}">✅ Bestelling afgehandeld / uitgeleverd</label>
+    </div>
+  </div>`;
+}
+
+function toggleAfgehandeld(i) {
+  const pakbon = document.getElementById('pakbon-' + i);
+  const checked = document.getElementById('check-' + i).checked;
+  pakbon.style.opacity = checked ? '0.4' : '1';
+  pakbon.style.filter = checked ? 'grayscale(1)' : '';
+}
+
+loadCSV();
+</script>
+</body>
+</html>
