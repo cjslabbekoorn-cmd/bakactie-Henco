@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bakactie – Alpe d'HuZes 2026</title>
+<title>Bakactie – Alpe d’HuZes 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -17,362 +17,64 @@
     --text: #1e1e1e;
     --shadow: rgba(26,79,138,0.15);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  .hero {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 60%, #1e6fa8 100%);
-    padding: 48px 24px 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40Z' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") repeat;
-    opacity: 0.6;
-  }
-
-  .mountain-deco {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 60px;
-    overflow: hidden;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  .hero { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 60%, #1e6fa8 100%); padding: 48px 24px 80px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40Z' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") repeat; opacity: 0.6; }
+  .mountain-deco { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; overflow: hidden; }
   .mountain-deco svg { width: 100%; height: 100%; }
-
-  .badge {
-    display: inline-block;
-    background: var(--orange);
-    color: white;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    animation: fadeDown 0.6s ease both;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 6vw, 3.4rem);
-    color: white;
-    line-height: 1.15;
-    position: relative;
-    animation: fadeDown 0.6s 0.1s ease both;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: #ffd080;
-  }
-
-  .hero-sub {
-    color: rgba(255,255,255,0.85);
-    font-size: 1rem;
-    margin-top: 14px;
-    max-width: 520px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-    position: relative;
-    animation: fadeDown 0.6s 0.2s ease both;
-  }
-
-  .container {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-  }
-
-  .story-card {
-    background: white;
-    border-radius: 20px;
-    padding: 32px;
-    margin-top: -40px;
-    box-shadow: 0 8px 40px var(--shadow);
-    position: relative;
-    z-index: 2;
-    animation: fadeUp 0.7s 0.3s ease both;
-  }
-
-  .story-card p {
-    font-size: 0.97rem;
-    line-height: 1.75;
-    color: #444;
-  }
-
+  .badge { display: inline-block; background: var(--orange); color: white; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; animation: fadeDown 0.6s ease both; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.4rem); color: white; line-height: 1.15; position: relative; animation: fadeDown 0.6s 0.1s ease both; }
+  .hero h1 em { font-style: italic; color: #ffd080; }
+  .hero-sub { color: rgba(255,255,255,0.85); font-size: 1rem; margin-top: 14px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; position: relative; animation: fadeDown 0.6s 0.2s ease both; }
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px 60px; }
+  .story-card { background: white; border-radius: 20px; padding: 32px; margin-top: -40px; box-shadow: 0 8px 40px var(--shadow); position: relative; z-index: 2; animation: fadeUp 0.7s 0.3s ease both; }
+  .story-card p { font-size: 0.97rem; line-height: 1.75; color: #444; }
   .story-card p + p { margin-top: 12px; }
-
-  .donate-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--blue);
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 18px;
-    transition: background 0.2s, transform 0.2s;
-  }
+  .donate-link { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: white; text-decoration: none; padding: 10px 20px; border-radius: 10px; font-size: 0.875rem; font-weight: 500; margin-top: 18px; transition: background 0.2s, transform 0.2s; }
   .donate-link:hover { background: var(--blue-light); transform: translateY(-1px); }
-
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--blue);
-    margin: 40px 0 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(to right, var(--orange), transparent);
-    border-radius: 2px;
-  }
-
-  .products {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 8px;
-  }
-
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blue); margin: 40px 0 20px; display: flex; align-items: center; gap: 12px; }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, var(--orange), transparent); border-radius: 2px; }
+  .products { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 8px; }
   @media (max-width: 480px) { .products { grid-template-columns: 1fr; } }
-
-  .product-card {
-    background: white;
-    border-radius: 16px;
-    padding: 24px 20px;
-    box-shadow: 0 4px 20px var(--shadow);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s;
-  }
+  .product-card { background: white; border-radius: 16px; padding: 24px 20px; box-shadow: 0 4px 20px var(--shadow); text-align: center; position: relative; overflow: hidden; transition: transform 0.2s; }
   .product-card:hover { transform: translateY(-3px); }
-
-  .product-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--orange), var(--brown-light));
-  }
-
+  .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--orange), var(--brown-light)); }
   .product-emoji { font-size: 2.6rem; margin-bottom: 10px; }
-
-  .product-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: var(--brown);
-    margin-bottom: 4px;
-  }
-
-  .product-desc {
-    font-size: 0.82rem;
-    color: #888;
-    margin-bottom: 14px;
-    line-height: 1.4;
-  }
-
-  .product-price {
-    display: inline-block;
-    background: var(--orange);
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 6px 18px;
-    border-radius: 20px;
-  }
-
-  .deadline-banner {
-    background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
-    color: white;
-    border-radius: 16px;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 24px 0;
-    box-shadow: 0 4px 20px rgba(107,58,31,0.25);
-  }
-
+  .product-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--brown); margin-bottom: 4px; }
+  .product-desc { font-size: 0.82rem; color: #888; margin-bottom: 14px; line-height: 1.4; }
+  .product-price { display: inline-block; background: var(--orange); color: white; font-weight: 600; font-size: 1.1rem; padding: 6px 18px; border-radius: 20px; }
+  .deadline-banner { background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%); color: white; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; margin: 24px 0; box-shadow: 0 4px 20px rgba(107,58,31,0.25); }
   .deadline-icon { font-size: 2rem; flex-shrink: 0; }
-
   .deadline-text strong { display: block; font-size: 1rem; margin-bottom: 2px; }
   .deadline-text span { font-size: 0.875rem; opacity: 0.9; }
-
-  .order-form {
-    background: white;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 8px 40px var(--shadow);
-  }
-
-  .form-row {
-    margin-bottom: 20px;
-  }
-
-  label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: var(--blue);
-    text-transform: uppercase;
-    margin-bottom: 7px;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e8eef6;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    color: var(--text);
-    background: #fafbfd;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-    -webkit-appearance: none;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--blue-light);
-    box-shadow: 0 0 0 3px rgba(42,107,191,0.12);
-    background: white;
-  }
-
+  .order-form { background: white; border-radius: 20px; padding: 32px; box-shadow: 0 8px 40px var(--shadow); }
+  .form-row { margin-bottom: 20px; }
+  label { display: block; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.5px; color: var(--blue); text-transform: uppercase; margin-bottom: 7px; }
+  input[type="text"], input[type="email"], input[type="tel"], select, textarea { width: 100%; padding: 12px 16px; border: 2px solid #e8eef6; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); background: #fafbfd; transition: border-color 0.2s, box-shadow 0.2s; outline: none; -webkit-appearance: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--blue-light); box-shadow: 0 0 0 3px rgba(42,107,191,0.12); background: white; }
   textarea { min-height: 80px; resize: vertical; }
-
-  .form-row-half {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
+  .form-row-half { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 480px) { .form-row-half { grid-template-columns: 1fr; } }
-
-  .qty-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fafbfd;
-    border: 2px solid #e8eef6;
-    border-radius: 10px;
-    padding: 10px 16px;
-    gap: 12px;
-  }
+  .qty-row { display: flex; align-items: center; justify-content: space-between; background: #fafbfd; border: 2px solid #e8eef6; border-radius: 10px; padding: 10px 16px; gap: 12px; }
   .qty-label { font-size: 0.9rem; color: var(--text); flex: 1; }
   .qty-price { font-size: 0.85rem; color: #888; }
   .qty-controls { display: flex; align-items: center; gap: 8px; }
-
-  .qty-btn {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    border: 2px solid var(--blue);
-    background: white;
-    color: var(--blue);
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-    line-height: 1;
-  }
+  .qty-btn { width: 32px; height: 32px; border-radius: 8px; border: 2px solid var(--blue); background: white; color: var(--blue); font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; line-height: 1; }
   .qty-btn:hover { background: var(--blue); color: white; }
-
-  .qty-num {
-    min-width: 28px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-top: 2px dashed #e8eef6;
-    margin-top: 20px;
-  }
+  .qty-num { min-width: 28px; text-align: center; font-weight: 600; font-size: 1rem; }
+  .total-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-top: 2px dashed #e8eef6; margin-top: 20px; }
   .total-label { font-weight: 600; font-size: 1rem; color: var(--blue); }
   .total-amount { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--orange); font-weight: 700; }
-
-  .submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.3px;
-    margin-top: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(26,79,138,0.3);
-  }
+  .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.3px; margin-top: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(26,79,138,0.3); }
   .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,79,138,0.4); }
   .submit-btn:active { transform: none; }
-
-  .success-msg {
-    display: none;
-    background: #e8f5e9;
-    border: 2px solid #4caf50;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    color: #2e7d32;
-    font-weight: 500;
-    margin-top: 16px;
-    font-size: 0.95rem;
-  }
-
-  .footer {
-    text-align: center;
-    padding: 32px 20px;
-    font-size: 0.82rem;
-    color: #999;
-  }
+  .success-msg { display: none; background: #e8f5e9; border: 2px solid #4caf50; border-radius: 12px; padding: 20px; text-align: center; color: #2e7d32; font-weight: 500; margin-top: 16px; font-size: 0.95rem; }
+  .footer { text-align: center; padding: 32px 20px; font-size: 0.82rem; color: #999; }
   .footer a { color: var(--blue); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
-
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate { animation: fadeUp 0.6s ease both; }
   .delay-1 { animation-delay: 0.4s; }
   .delay-2 { animation-delay: 0.55s; }
@@ -382,9 +84,9 @@
 <body>
 
 <div class="hero">
-  <div class="badge">🎗️ Alpe d'HuZes 2026</div>
+  <div class="badge">🎗️ Alpe d’HuZes 2026</div>
   <h1>Bak mee voor een <em>goed doel!</em></h1>
-  <p class="hero-sub">Steun de Alpe d'HuZes en bestel heerlijk zelfgemaakt lekkers.</p>
+  <p class="hero-sub">Steun de Alpe d’HuZes en bestel heerlijk zelfgemaakt lekkers.</p>
   <div class="mountain-deco">
     <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 60 L0 40 L150 10 L300 50 L450 5 L600 45 L750 15 L900 50 L1050 8 L1200 42 L1200 60Z" fill="#fdf6ec"/>
@@ -395,7 +97,7 @@
 <div class="container">
 
   <div class="story-card">
-    <p>Op <strong>4 juni 2026</strong> doe ik mee aan de <strong>Alpe d'HuZes</strong>. We gaan zoveel mogelijk geld inzamelen voor onderzoek naar kanker en ter verbetering van de kwaliteit van leven van mensen met kanker.</p>
+    <p>Op <strong>4 juni 2026</strong> doe ik mee aan de <strong>Alpe d’HuZes</strong>. We gaan zoveel mogelijk geld inzamelen voor onderzoek naar kanker en ter verbetering van de kwaliteit van leven van mensen met kanker.</p>
     <p>Om dit te steunen organiseer ik een <strong>bakactie</strong> 🧁 Bestel jij ook iets lekkers?</p>
     <a href="https://inschrijving.opgevenisgeenoptie.nl/fundraisers/deltionteam7" target="_blank" class="donate-link">
       💙 Bekijk onze donatiepagina
@@ -451,18 +153,19 @@
       <label>Telefoonnummer <span id="phone-required-label" style="display:none;color:var(--orange);font-size:0.85rem;">(verplicht bij tikkie)</span></label>
       <input type="text" id="phone" placeholder="06 – xxxxxxxx">
     </div>
+
     <div class="form-row">
       <label>Postcode <span style="font-weight:400;color:#888;font-size:0.85rem;text-transform:none">(optioneel)</span></label>
       <input type="text" id="postcode" placeholder="bijv. 4382 AA of 8032 AB" maxlength="7" oninput="checkPostcode(this.value)" autocomplete="postal-code">
       <div id="msg-zeeland" style="display:none;margin-top:8px;padding:10px 14px;background:#e8f5e9;border-radius:8px;color:#1a6e3c;font-size:0.85rem;font-weight:600">
-        &#x2705; Zeeuwse postcode herkend &#x2013; levering op zaterdag 29 maart geselecteerd!
+        ✅ Zeeuwse postcode herkend – levering op zaterdag 29 maart geselecteerd!
       </div>
     </div>
 
     <div class="form-row" id="row-locatie" style="display:none">
       <label>Ophaallocatie Zwolle *</label>
       <select id="locatie">
-        <option value="">&#x2014; Kies een locatie &#x2014;</option>
+        <option value="">— Kies een locatie —</option>
         <option value="Punterdiep, Zwolle">Punterdiep, Zwolle</option>
         <option value="Flora Bilderbeekstraat, Zwolle">Flora Bilderbeekstraat, Zwolle</option>
       </select>
@@ -501,7 +204,7 @@
       </div>
     </div>
 
-    <div class="form-row-half" id="row-dag-dagdeel">
+    <div class="form-row-half">
       <div class="form-row">
         <label>Voorkeursdag voor afhalen *</label>
         <select id="day" required>
@@ -512,7 +215,7 @@
           <option value="Donderdag 19 maart">Donderdag 19 maart</option>
           <option value="Vrijdag 20 maart">Vrijdag 20 maart</option>
           <option value="Zaterdag 21 maart">Zaterdag 21 maart</option>
-          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" style="display:none">🚚 Levering Zeeland – zaterdag 29 maart</option>
+          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" disabled hidden>🚚 Levering Zeeland – zaterdag 29 maart</option>
         </select>
       </div>
       <div class="form-row">
@@ -558,13 +261,13 @@
       <div class="total-amount" id="total">€ 0,00</div>
     </div>
 
-    <button class="submit-btn" id="submit-btn" onclick="submitOrder()">✉️ &nbsp;Bestelling plaatsen</button>
+    <button class="submit-btn" id="submit-btn" onclick="submitOrder()">✉️  Bestelling plaatsen</button>
 
     <div class="success-msg" id="success">
       🎉 Bedankt voor je bestelling! Je bestelling is geregistreerd. We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
     </div>
     <div id="error-msg" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:12px;padding:20px;text-align:center;color:#c62828;font-weight:500;margin-top:16px;font-size:0.95rem;">
-      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="18707d767b77686d74747d762a5870776c75797174367b7775">[email&#160;protected]</a>.
+      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via hencopullen2@hotmail.com.
     </div>
 
   </div>
@@ -572,11 +275,11 @@
 </div>
 
 <div class="footer">
-  <p>Opbrengst gaat volledig naar <strong>Alpe d'HuZes</strong> — kankeronderzoek &amp; kwaliteit van leven.<br>
+  <p>Opbrengst gaat volledig naar <strong>Alpe d’HuZes</strong> — kankeronderzoek &amp; kwaliteit van leven.<br>
   <a href="https://inschrijving.opgevenisgeenoptie.nl/fundraisers/deltionteam7" target="_blank">Doneer rechtstreeks via de inzamelingsactie →</a></p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
@@ -585,25 +288,114 @@
   const GH_OWNER = 'cjslabbekoorn-cmd';
   const GH_REPO  = 'bakactie-Henco';
   const GH_FILE  = 'bestellingen.csv';
+
+  const ZEELAND_DAY = 'Levering Zeeland - zaterdag 29 maart';
+
   function checkPostcode(val) {
     const clean = val.replace(/\s/g, '').toUpperCase();
     const isZeeland = /^(43|44|45)\d{2}/.test(clean);
     const is8032    = /^8032/.test(clean);
-    // Reset
-    document.getElementById('opt-zeeland').style.display = 'none';
+    const optZ = document.getElementById('opt-zeeland');
+    optZ.disabled = true;
+    optZ.hidden = true;
     document.getElementById('msg-zeeland').style.display = 'none';
     document.getElementById('row-locatie').style.display = 'none';
-    document.getElementById('row-dag-dagdeel').style.display = '';
-    if (document.getElementById('day').value === 'za-29') document.getElementById('day').value = '';
+    if (document.getElementById('day').value === ZEELAND_DAY) document.getElementById('day').value = '';
     if (isZeeland) {
-      document.getElementById('opt-zeeland').style.display = '';
+      optZ.disabled = false;
+      optZ.hidden = false;
       document.getElementById('msg-zeeland').style.display = 'block';
-      document.getElementById('row-dag-dagdeel').style.display = 'none';
-      document.getElementById('day').value = 'za-29';
+      document.getElementById('day').value = ZEELAND_DAY;
       document.getElementById('dagdeel').value = 'middag';
     } else if (is8032) {
       document.getElementById('row-locatie').style.display = 'block';
     }
+  }
+
+  function flavorSelectHTML(i) {
+    return '<select id="cupcake-flavor-' + i + '" style="margin-bottom:8px;">' +
+      '<option value="">— Set ' + i + ': kies smaak —</option>' +
+      '<option value="2x stroopwafel">🍯 2× Stroopwafel</option>' +
+      '<option value="2x chocolade">🍫 2× Chocolade</option>' +
+      '<option value="1x stroopwafel + 1x chocolade">🍯🍫 1× Stroopwafel + 1× Chocolade</option>' +
+      '</select>';
+  }
+
+  function updateFlavorSelects() {
+    const container = document.getElementById('cupcake-flavors-container');
+    const row = document.getElementById('cupcake-flavor-row');
+    if (qty.cup === 0) { row.style.display = 'none'; container.innerHTML = ''; return; }
+    row.style.display = 'block';
+    const current = container.querySelectorAll('select').length;
+    if (qty.cup > current) {
+      for (let i = current + 1; i <= qty.cup; i++) {
+        container.insertAdjacentHTML('beforeend', flavorSelectHTML(i));
+      }
+    } else {
+      while (container.querySelectorAll('select').length > qty.cup) {
+        container.removeChild(container.lastChild);
+      }
+    }
+  }
+
+  function changeQty(item, delta) {
+    qty[item] = Math.max(0, qty[item] + delta);
+    document.getElementById('qty-' + item).textContent = qty[item];
+    if (item === 'cup') updateFlavorSelects();
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const donation = parseFloat(document.getElementById('donation').value) || 0;
+    const total = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
+    document.getElementById('total').textContent = '€ ' + total.toFixed(2).replace('.', ',');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('payment').addEventListener('change', function() {
+      const isTikkie = this.value === 'tikkie vooraf';
+      document.getElementById('phone-required-label').style.display = isTikkie ? 'inline' : 'none';
+      document.getElementById('phone').style.borderColor = isTikkie ? 'var(--orange)' : '#e8eef6';
+    });
+  });
+
+  async function logToGitHub(row, orderTotal, orderDonation) {
+    const apiUrl = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+    const headers = { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' };
+    let sha = null, existing = '';
+    try {
+      const res = await fetch(apiUrl, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        sha = data.sha;
+        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g, '')), c => c.charCodeAt(0));
+        existing = new TextDecoder('utf-8').decode(bytes);
+      }
+    } catch(e) {}
+    const header = 'Tijdstip,Naam,Email,Telefoon,Kruidkoek,Cupcakes,Smaken,Totaal,Dag,Dagdeel,Betaalvoorkeur,Opmerkingen,Donatie\n';
+    const newContent = existing ? existing + row + '\n' : header + row + '\n';
+    const body = { message: 'Nieuwe bestelling', content: btoa(unescape(encodeURIComponent(newContent))), ...(sha ? { sha } : {}) };
+    const putRes = await fetch(apiUrl, { method: 'PUT', headers, body: JSON.stringify(body) });
+    if (!putRes.ok) throw new Error('GitHub write failed');
+    await updateStats(orderTotal, orderDonation);
+  }
+
+  async function updateStats(orderTotal, orderDonation) {
+    const statsUrl = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/stats.json';
+    const headers = { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' };
+    let sha = null, count = 0, totaal = 0, donaties = 0;
+    try {
+      const res = await fetch(statsUrl, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        sha = data.sha;
+        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g,'')), c => c.charCodeAt(0));
+        const stats = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+        count = stats.count || 0; totaal = stats.totaal || 0; donaties = stats.donaties || 0;
+      }
+    } catch(e) {}
+    const newStats = { count: count + 1, totaal: Math.round((totaal + orderTotal) * 100) / 100, donaties: Math.round((donaties + (orderDonation || 0)) * 100) / 100 };
+    await fetch(statsUrl, { method: 'PUT', headers, body: JSON.stringify({ message: 'Stats update', content: btoa(JSON.stringify(newStats)), ...(sha ? { sha } : {}) }) });
   }
 
   async function submitOrder() {
@@ -616,17 +408,17 @@
     const payment  = document.getElementById('payment').value;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
     const notes    = document.getElementById('notes').value.trim();
-    const locatie   = document.getElementById('locatie').value;
+    const locatie  = document.getElementById('locatie').value;
     const totalQty = qty.kruid + qty.cup;
 
-    if (!fname || !lname)              { alert('Vul je naam in.'); return; }
-    if (!email || !email.includes('@')){ alert('Vul een geldig e-mailadres in.'); return; }
-    if (totalQty === 0)                { alert('Voeg minimaal één product toe.'); return; }
+    if (!fname || !lname)               { alert('Vul je naam in.'); return; }
+    if (!email || !email.includes('@')) { alert('Vul een geldig e-mailadres in.'); return; }
+    if (totalQty === 0)                 { alert('Voeg minimaal één product toe.'); return; }
 
     if (qty.cup > 0) {
       for (let i = 1; i <= qty.cup; i++) {
-        if (!document.getElementById(`cupcake-flavor-${i}`).value) {
-          alert(`Kies een smaak voor set ${i}.`); return;
+        if (!document.getElementById('cupcake-flavor-' + i).value) {
+          alert('Kies een smaak voor set ' + i + '.'); return;
         }
       }
     }
@@ -645,27 +437,25 @@
     if (qty.cup > 0) {
       const parts = [];
       for (let i = 1; i <= qty.cup; i++) {
-        parts.push(`Set ${i}: ${document.getElementById(`cupcake-flavor-${i}`).value}`);
+        parts.push('Set ' + i + ': ' + document.getElementById('cupcake-flavor-' + i).value);
       }
       smaken = parts.join(' | ');
     }
 
-    const dayText = document.getElementById('day').value;
-    const total   = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
-    const now     = new Date().toLocaleString('nl-NL');
-
-    const escape = v => `"${String(v).replace(/"/g, '""')}"`;
+    const total = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
+    const now   = new Date().toLocaleString('nl-NL');
+    const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
 
     const row = [
       escape(now),
-      escape(`${fname} ${lname}`),
+      escape(fname + ' ' + lname),
       escape(email),
       escape(phone),
       qty.kruid,
       qty.cup,
       escape(smaken),
-      `${total.toFixed(2)}`,
-      escape(dayText),
+      total.toFixed(2),
+      escape(day),
       escape(dagdeel),
       escape(payment),
       escape(locatie ? 'Locatie: ' + locatie + (notes ? ' | ' + notes : '') : notes),
@@ -683,6 +473,12 @@
       document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } catch(e) {
       document.getElementById('error-msg').style.display = 'block';
-      document.getElementById('error-msg').innerHTML = `
-        <strong>Er ging iets mis bij het opslaan.</strong><br>
-        Stuur je bestelling pe
+      document.getElementById('error-msg').innerHTML = '<strong>Er ging iets mis bij het opslaan.</strong><br>Stuur je bestelling per e-mail naar <a href="mailto:hencopullen2@hotmail.com">hencopullen2@hotmail.com</a>.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✉️  Bestelling plaatsen';
+    }
+  }
+</script>
+</body>
+</html>
