@@ -657,7 +657,7 @@
     } catch(e) {}
 
     // 2. Voeg header toe als het bestand nieuw is
-    const header = 'Tijdstip,Naam,Email,Telefoon,Kruidkoek,Cupcakes,Smaken,Totaal,Dag,Dagdeel,Betaalvoorkeur,Opmerkingen\n';
+    const header = 'Tijdstip,Naam,Email,Telefoon,Kruidkoek,Cupcakes,Smaken,Totaal,Dag,Dagdeel,Betaalvoorkeur,Opmerkingen,Donatie\n';
     const newContent = existing ? existing + row + '\n' : header + row + '\n';
 
     // 3. Schrijf terug naar GitHub
@@ -735,7 +735,8 @@
       escape(dayText),
       escape(dagdeel),
       escape(payment),
-      escape(notes)
+      escape(notes),
+      donation > 0 ? donation.toFixed(2) : ''
     ].join(',');
 
     // UI: laden
