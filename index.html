@@ -467,7 +467,7 @@
 
     <div class="form-row">
       <label>Telefoonnummer <span id="phone-required-label" style="display:none;color:var(--orange);font-size:0.85rem;">(verplicht bij tikkie)</span></label>
-      <input type="tel" id="phone" placeholder="06 – xxxxxxxx">
+      <input type="text" id="phone" placeholder="06 – xxxxxxxx">
     </div>
 
     <div class="form-row">
@@ -559,10 +559,13 @@
       <div class="total-amount" id="total">€ 0,00</div>
     </div>
 
-    <button class="submit-btn" onclick="submitOrder()">✉️ &nbsp;Bestelling plaatsen</button>
+    <button class="submit-btn" id="submit-btn" onclick="submitOrder()">✉️ &nbsp;Bestelling plaatsen</button>
 
     <div class="success-msg" id="success">
-      🎉 Bedankt voor je bestelling! We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
+      🎉 Bedankt voor je bestelling! Je bestelling is geregistreerd. We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
+    </div>
+    <div id="error-msg" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:12px;padding:20px;text-align:center;color:#c62828;font-weight:500;margin-top:16px;font-size:0.95rem;">
+      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via hencopullen2@hotmail.com.
     </div>
 
   </div>
@@ -579,6 +582,11 @@
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
+  const GH_TOKEN = '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';
+  const GH_OWNER = 'cjslabbekoorn-cmd';
+  const GH_REPO  = 'bakactie-Henco';
+  const GH_FILE  = 'bestellingen.csv';
+
   function flavorSelectHTML(i) {
     return `<select id="cupcake-flavor-${i}" style="margin-bottom:8px;">
       <option value="">— Set ${i}: kies smaak —</option>
@@ -593,7 +601,6 @@
     const row = document.getElementById('cupcake-flavor-row');
     if (qty.cup === 0) { row.style.display = 'none'; container.innerHTML = ''; return; }
     row.style.display = 'block';
-    // Keep existing values, only add/remove selects as needed
     const current = container.querySelectorAll('select').length;
     if (qty.cup > current) {
       for (let i = current + 1; i <= qty.cup; i++) {
@@ -619,7 +626,6 @@
     document.getElementById('total').textContent = '€ ' + total.toFixed(2).replace('.', ',');
   }
 
-  // Show/hide phone required label based on payment choice
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('payment').addEventListener('change', function() {
       const isTikkie = this.value === 'tikkie vooraf';
@@ -628,22 +634,61 @@
     });
   });
 
-  function submitOrder() {
-    const fname = document.getElementById('fname').value.trim();
-    const lname = document.getElementById('lname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const day = document.getElementById('day').value;
-    const dagdeel = document.getElementById('dagdeel').value;
-    const payment = document.getElementById('payment').value;
-    const totalQty = qty.kruid + qty.cup;
+  async function logToGitHub(row) {
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+    const headers = {
+      'Authorization': `token ${GH_TOKEN}`,
+      'Content-Type': 'application/json'
+    };
+
+    // 1. Probeer bestaand bestand op te halen
+    let sha = null;
+    let existing = '';
+    try {
+      const res = await fetch(apiUrl, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        sha = data.sha;
+        existing = atob(data.content.replace(/\n/g, ''));
+      }
+    } catch(e) {}
+
+    // 2. Voeg header toe als het bestand nieuw is
+    const header = 'Tijdstip,Naam,Email,Telefoon,Kruidkoek,Cupcakes,Smaken,Totaal,Dag,Dagdeel,Betaalvoorkeur,Opmerkingen\n';
+    const newContent = existing ? existing + row + '\n' : header + row + '\n';
+
+    // 3. Schrijf terug naar GitHub
+    const body = {
+      message: `Nieuwe bestelling`,
+      content: btoa(unescape(encodeURIComponent(newContent))),
+      ...(sha ? { sha } : {})
+    };
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(body)
+    });
+
+    if (!putRes.ok) throw new Error('GitHub write failed');
+  }
+
+  async function submitOrder() {
+    const fname    = document.getElementById('fname').value.trim();
+    const lname    = document.getElementById('lname').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const phone    = document.getElementById('phone').value.trim();
+    const day      = document.getElementById('day').value;
+    const dagdeel  = document.getElementById('dagdeel').value;
+    const payment  = document.getElementById('payment').value;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
+    const notes    = document.getElementById('notes').value.trim();
+    const totalQty = qty.kruid + qty.cup;
 
-    if (!fname || !lname) { alert('Vul je naam in.'); return; }
-    if (!email || !email.includes('@')) { alert('Vul een geldig e-mailadres in.'); return; }
-    if (totalQty === 0) { alert('Voeg minimaal één product toe aan je bestelling.'); return; }
+    if (!fname || !lname)              { alert('Vul je naam in.'); return; }
+    if (!email || !email.includes('@')){ alert('Vul een geldig e-mailadres in.'); return; }
+    if (totalQty === 0)                { alert('Voeg minimaal één product toe.'); return; }
 
-    // Check all flavor selects filled
     if (qty.cup > 0) {
       for (let i = 1; i <= qty.cup; i++) {
         if (!document.getElementById(`cupcake-flavor-${i}`).value) {
@@ -652,43 +697,60 @@
       }
     }
 
-    if (!day) { alert('Kies een voorkeursdag voor afhalen.'); return; }
-    if (!dagdeel) { alert('Kies een dagdeel (ochtend of middag).'); return; }
+    if (!day)     { alert('Kies een voorkeursdag.'); return; }
+    if (!dagdeel) { alert('Kies een dagdeel.'); return; }
     if (!payment) { alert('Kies je betaalvoorkeur.'); return; }
-    if (payment === 'tikkie vooraf' && !phone) { alert('Vul je telefoonnummer in — dit is nodig om het tikkie te sturen.'); return; }
-
-    const notes = document.getElementById('notes').value.trim();
-    const total = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
-
-    // Build flavor summary
-    let flavorLines = '';
-    if (qty.cup > 0) {
-      for (let i = 1; i <= qty.cup; i++) {
-        const f = document.getElementById(`cupcake-flavor-${i}`).value;
-        flavorLines += `\n    Set ${i}: ${f}`;
-      }
+    if (payment === 'tikkie vooraf' && !phone) {
+      alert('Vul je telefoonnummer in — dit is nodig om het tikkie te sturen.'); return;
     }
 
-    const body = [
-      `Naam: ${fname} ${lname}`,
-      `E-mail: ${email}`,
-      phone ? `Telefoon: ${phone}` : '',
-      '',
-      `Bestelling:`,
-      qty.kruid > 0 ? `  Kruidkoek x${qty.kruid} = € ${(qty.kruid * 7.5).toFixed(2)}` : '',
-      qty.cup > 0 ? `  2 Cupcakes x${qty.cup} = € ${(qty.cup * 6.0).toFixed(2)}${flavorLines}` : '',
-      donation > 0 ? `  Extra donatie = € ${donation.toFixed(2)}` : '',
-      `  Totaal: € ${total.toFixed(2)}`,
-      '',
-      `Afhalen: ${dayText} – ${dagdeel}`,
-      `Betaalvoorkeur: ${payment}`,
-      notes ? `\nOpmerkingen: ${notes}` : '',
-    ].filter(l => l !== undefined).join('\n');
+    // Bouw smakenlijst
+    let smaken = '';
+    if (qty.cup > 0) {
+      const parts = [];
+      for (let i = 1; i <= qty.cup; i++) {
+        parts.push(`Set ${i}: ${document.getElementById(`cupcake-flavor-${i}`).value}`);
+      }
+      smaken = parts.join(' | ');
+    }
 
-    window.location.href = `mailto:hencopullen2@hotmail.com?subject=Bestelling Bakactie Alpe d'HuZes – ${fname} ${lname}&body=${encodeURIComponent(body)}`;
+    const dayText = document.getElementById('day').options[document.getElementById('day').selectedIndex].text;
+    const total   = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
+    const now     = new Date().toLocaleString('nl-NL');
 
-    document.getElementById('success').style.display = 'block';
-    document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // CSV-rij (aanhalingstekens om velden met komma's)
+    const escape = v => `"${String(v).replace(/"/g, '""')}"`;
+    const row = [
+      escape(now),
+      escape(`${fname} ${lname}`),
+      escape(email),
+      escape(phone),
+      qty.kruid,
+      qty.cup,
+      escape(smaken),
+      `€ ${total.toFixed(2)}`,
+      escape(dayText),
+      escape(dagdeel),
+      escape(payment),
+      escape(notes)
+    ].join(',');
+
+    // UI: laden
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = '⏳  Bestelling opslaan…';
+    document.getElementById('error-msg').style.display = 'none';
+
+    try {
+      await logToGitHub(row);
+      document.getElementById('success').style.display = 'block';
+      document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      btn.style.display = 'none';
+    } catch(e) {
+      document.getElementById('error-msg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '✉️  Bestelling plaatsen';
+    }
   }
 </script>
 
