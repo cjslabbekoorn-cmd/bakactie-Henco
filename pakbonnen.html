@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
@@ -15,284 +16,311 @@
       --border: #dde4f0;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+```
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--light);
-      color: #222;
-      min-height: 100vh;
-    }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--light);
+  color: #222;
+  min-height: 100vh;
+}
 
-    /* ── SCHERM UI ── */
-    @media screen {
-      .toolbar {
-        background: var(--blue);
-        padding: 16px 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-      }
-      .toolbar h1 {
-        font-family: 'DM Serif Display', serif;
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: 400;
-      }
-      .toolbar p { color: #aac4e8; font-size: 0.8rem; margin-top: 2px; }
-      .toolbar-right { display: flex; gap: 10px; align-items: center; }
-      .btn {
-        padding: 9px 18px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 600;
-        transition: opacity 0.15s;
-      }
-      .btn:hover { opacity: 0.85; }
-      .btn-print { background: var(--orange); color: #fff; }
-      .btn-reload { background: rgba(255,255,255,0.15); color: #fff; }
-      .filter-bar {
-        background: #fff;
-        border-bottom: 1px solid var(--border);
-        padding: 12px 32px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .filter-bar label { font-size: 0.8rem; font-weight: 600; color: #888; }
-      .filter-bar select, .filter-bar input {
-        padding: 6px 10px;
-        border: 1.5px solid var(--border);
-        border-radius: 6px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.82rem;
-        background: #fafbfd;
-      }
-      .stats-bar {
-        padding: 16px 32px;
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-      }
-      .stat {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 12px 20px;
-        min-width: 140px;
-      }
-      .stat-label { font-size: 0.72rem; font-weight: 700; color: #aaa; letter-spacing: 0.5px; text-transform: uppercase; }
-      .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--blue); margin-top: 2px; }
-      .stat-value.orange { color: var(--orange); }
-      .stat-value.green { color: var(--green); }
+/* ── SCHERM UI ── */
+@media screen {
+  .toolbar {
+    background: var(--blue);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .toolbar h1 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+  .toolbar p { color: #aac4e8; font-size: 0.8rem; margin-top: 2px; }
+  .toolbar-right { display: flex; gap: 10px; align-items: center; }
+  .btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-print { background: var(--orange); color: #fff; }
+  .btn-reload { background: rgba(255,255,255,0.15); color: #fff; }
+  .filter-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filter-bar label { font-size: 0.8rem; font-weight: 600; color: #888; }
+  .filter-bar select, .filter-bar input {
+    padding: 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    background: #fafbfd;
+  }
+  .stats-bar {
+    padding: 16px 32px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    min-width: 140px;
+  }
+  .stat-label { font-size: 0.72rem; font-weight: 700; color: #aaa; letter-spacing: 0.5px; text-transform: uppercase; }
+  .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--blue); margin-top: 2px; }
+  .stat-value.orange { color: var(--orange); }
+  .stat-value.green { color: var(--green); }
 
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-        gap: 20px;
-        padding: 0 32px 40px;
-      }
-      #loading, #error-msg {
-        text-align: center;
-        padding: 60px 32px;
-        color: #888;
-        font-size: 1rem;
-      }
-      #error-msg { color: var(--red); }
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+    padding: 0 32px 40px;
+  }
+  #loading, #error-msg {
+    text-align: center;
+    padding: 60px 32px;
+    color: #888;
+    font-size: 1rem;
+  }
+  #error-msg { color: var(--red); }
+}
 
-    /* ── PAKBON KAART ── */
-    .pakbon {
-      background: #fff;
-      border-radius: 14px;
-      border: 1.5px solid var(--border);
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-      page-break-inside: avoid;
-    }
-    .pakbon-header {
-      background: var(--blue);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .pakbon-header .naam {
-      font-family: 'DM Serif Display', serif;
-      color: #fff;
-      font-size: 1.15rem;
-      font-weight: 400;
-      line-height: 1.2;
-    }
-    .pakbon-header .tijdstip {
-      color: #aac4e8;
-      font-size: 0.75rem;
-      margin-top: 3px;
-    }
-    .betaling-badge {
-      padding: 5px 11px;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .badge-tikkie { background: #fff3e0; color: var(--orange); }
-    .badge-contant { background: #e8f5e9; color: var(--green); }
-    .badge-betaald { background: #e8f5e9; color: var(--green); }
+/* ── PAKBON KAART ── */
+.pakbon {
+  background: #fff;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  page-break-inside: avoid;
+}
+.pakbon-header {
+  background: var(--blue);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.pakbon-header .naam {
+  font-family: 'DM Serif Display', serif;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.pakbon-header .tijdstip {
+  color: #aac4e8;
+  font-size: 0.75rem;
+  margin-top: 3px;
+}
+.betaling-badge {
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-tikkie { background: #fff3e0; color: var(--orange); }
+.badge-tikkie.betaald { background: #e8f5e9; color: var(--green); }
+.badge-contant { background: #e8f5e9; color: var(--green); }
 
-    .pakbon-body { padding: 16px 18px; }
+.tikkie-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: #fffbf5;
+}
+.tikkie-toggle label { font-size: 0.82rem; font-weight: 600; color: #555; cursor: pointer; }
+.switch { position: relative; display: inline-block; width: 42px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: #ddd; border-radius: 24px; transition: .3s;
+}
+.slider:before {
+  content: ""; position: absolute;
+  width: 18px; height: 18px; left: 3px; bottom: 3px;
+  background: white; border-radius: 50%; transition: .3s;
+}
+input:checked + .slider { background: var(--green); }
+input:checked + .slider:before { transform: translateX(18px); }
+.badge-betaald { background: #e8f5e9; color: var(--green); }
 
-    .products { margin-bottom: 12px; }
-    .product-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid #f0f4fa;
-    }
-    .product-row:last-child { border-bottom: none; }
-    .product-qty {
-      background: var(--blue);
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .product-naam { font-weight: 600; font-size: 0.9rem; flex: 1; }
-    .product-prijs { font-weight: 700; color: var(--orange); font-size: 0.9rem; }
-    .smaak-tag {
-      display: inline-block;
-      background: #eef2f8;
-      color: #555;
-      border-radius: 5px;
-      padding: 2px 8px;
-      font-size: 0.72rem;
-      margin: 3px 3px 0 0;
-    }
+.pakbon-body { padding: 16px 18px; }
 
-    .meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .meta-item { }
-    .meta-label { font-size: 0.68rem; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.4px; }
-    .meta-value { font-size: 0.85rem; color: #333; margin-top: 1px; font-weight: 500; }
+.products { margin-bottom: 12px; }
+.product-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f4fa;
+}
+.product-row:last-child { border-bottom: none; }
+.product-qty {
+  background: var(--blue);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.product-naam { font-weight: 600; font-size: 0.9rem; flex: 1; }
+.product-prijs { font-weight: 700; color: var(--orange); font-size: 0.9rem; }
+.smaak-tag {
+  display: inline-block;
+  background: #eef2f8;
+  color: #555;
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  margin: 3px 3px 0 0;
+}
 
-    .pakbon-footer {
-      border-top: 2px dashed var(--border);
-      padding: 12px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fafbfd;
-    }
-    .totaal-label { font-size: 0.75rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
-    .totaal-bedrag { font-size: 1.3rem; font-weight: 700; color: var(--blue); }
-    .donatie-badge {
-      background: #e8f0fb;
-      color: var(--blue);
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.meta-item { }
+.meta-label { font-size: 0.68rem; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.4px; }
+.meta-value { font-size: 0.85rem; color: #333; margin-top: 1px; font-weight: 500; }
 
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-top: 1px solid var(--border);
-      background: #fff;
-    }
-    .checkbox-row input[type=checkbox] {
-      width: 18px; height: 18px;
-      accent-color: var(--green);
-      cursor: pointer;
-    }
-    .checkbox-row label { font-size: 0.82rem; font-weight: 600; color: #555; cursor: pointer; }
+.pakbon-footer {
+  border-top: 2px dashed var(--border);
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafbfd;
+}
+.totaal-label { font-size: 0.75rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
+.totaal-bedrag { font-size: 1.3rem; font-weight: 700; color: var(--blue); }
+.donatie-badge {
+  background: #e8f0fb;
+  color: var(--blue);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
 
-    /* ── PRINT STYLES ── */
-    @media print {
-      @page { size: A4; margin: 0; }
-      body { background: #fff; }
-      .toolbar, .filter-bar, .stats-bar, .checkbox-row { display: none !important; }
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+.checkbox-row input[type=checkbox] {
+  width: 18px; height: 18px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.checkbox-row label { font-size: 0.82rem; font-weight: 600; color: #555; cursor: pointer; }
 
-      .grid { display: block; padding: 0; }
+/* ── PRINT STYLES ── */
+@media print {
+  @page { size: A4; margin: 0; }
+  body { background: #fff; }
+  .toolbar, .filter-bar, .stats-bar, .checkbox-row { display: none !important; }
 
-      .pakbon {
-        width: 100%;
-        height: 100vh;
-        min-height: 297mm;
-        border: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        page-break-after: always;
-        break-after: page;
-        display: flex;
-        flex-direction: column;
-      }
+  .grid { display: block; padding: 0; }
 
-      .pakbon-header { padding: 18mm 16mm 12mm; flex-shrink: 0; }
-      .pakbon-header .naam { font-size: 2rem; }
-      .pakbon-header .tijdstip { font-size: 0.9rem; margin-top: 5px; }
-      .betaling-badge { font-size: 1rem; padding: 10px 20px; border-radius: 30px; align-self: flex-start; margin-top: 4px; }
+  .pakbon {
+    width: 100%;
+    height: 100vh;
+    min-height: 297mm;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    break-after: page;
+    display: flex;
+    flex-direction: column;
+  }
 
-      .pakbon-body {
-        padding: 8mm 16mm;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 6mm;
-      }
+  .pakbon-header { padding: 18mm 16mm 12mm; flex-shrink: 0; }
+  .pakbon-header .naam { font-size: 2rem; }
+  .pakbon-header .tijdstip { font-size: 0.9rem; margin-top: 5px; }
+  .betaling-badge { font-size: 1rem; padding: 10px 20px; border-radius: 30px; align-self: flex-start; margin-top: 4px; }
 
-      .products { margin-bottom: 0; }
-      .product-row { padding: 12px 0; border-bottom: 1.5px solid #e8eef6; }
-      .product-qty { width: 40px; height: 40px; font-size: 1.15rem; }
-      .product-naam { font-size: 1.1rem; }
-      .product-prijs { font-size: 1.1rem; }
-      .smaak-tag { font-size: 0.85rem; padding: 4px 10px; margin-top: 4px; }
+  .pakbon-body {
+    padding: 8mm 16mm;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6mm;
+  }
 
-      .meta-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 0;
-        border: 1.5px solid #e8eef6;
-        border-radius: 8px;
-        padding: 14px;
-      }
-      .meta-label { font-size: 0.75rem; }
-      .meta-value { font-size: 1rem; }
+  .products { margin-bottom: 0; }
+  .product-row { padding: 12px 0; border-bottom: 1.5px solid #e8eef6; }
+  .product-qty { width: 40px; height: 40px; font-size: 1.15rem; }
+  .product-naam { font-size: 1.1rem; }
+  .product-prijs { font-size: 1.1rem; }
+  .smaak-tag { font-size: 0.85rem; padding: 4px 10px; margin-top: 4px; }
 
-      .pakbon-footer {
-        padding: 16px 16mm;
-        border-top: 3px dashed #ccc;
-        flex-shrink: 0;
-        margin-top: auto;
-      }
-      .totaal-label { font-size: 0.85rem; }
-      .totaal-bedrag { font-size: 2rem; }
-      .donatie-badge { font-size: 0.9rem; padding: 7px 14px; }
-    }
+  .meta-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 0;
+    border: 1.5px solid #e8eef6;
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .meta-label { font-size: 0.75rem; }
+  .meta-value { font-size: 1rem; }
+
+  .pakbon-footer {
+    padding: 16px 16mm;
+    border-top: 3px dashed #ccc;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  .totaal-label { font-size: 0.85rem; }
+  .totaal-bedrag { font-size: 2rem; }
+  .donatie-badge { font-size: 0.9rem; padding: 7px 14px; }
+}
+```
+
   </style>
 </head>
 <body>
@@ -420,7 +448,7 @@ function pakbonHTML(o, i) {
   const [tijdstip, naam, email, tel, kruid, cup, smaken, totaal, dag, dagdeel, betaling, opmerkingen, donatie] = o;
   const isTikkie = (betaling || '').toLowerCase().includes('tikkie');
   const badgeClass = isTikkie ? 'badge-tikkie' : 'badge-contant';
-  const badgeText = isTikkie ? '📱 Tikkie – betaald' : '💵 Contant – nog betalen';
+  const badgeText = isTikkie ? '📱 Tikkie – nog niet betaald' : '💵 Contant – nog betalen';
 
   let producten = '';
   if (parseInt(kruid) > 0) {
@@ -440,9 +468,15 @@ function pakbonHTML(o, i) {
     </div>`;
   }
 
-  const donatieHTML = parseFloat(donatie) > 0
-    ? `<span class="donatie-badge">💙 Donatie € ${parseFloat(donatie).toFixed(2).replace('.', ',')}</span>`
+  const donatieRij = parseFloat(donatie) > 0
+    ? `<div class="product-row">
+      <div class="product-qty" style="background:#1a6e3c">1</div>
+      <div class="product-naam">💙 Extra donatie <span style="font-weight:400;font-size:0.78rem;color:#1a6e3c">Alpe d'HuZes</span></div>
+      <div class="product-prijs" style="color:#1a6e3c">€ ${parseFloat(donatie).toFixed(2).replace('.', ',')}</div>
+    </div>`
     : '';
+  const donatieHTML = '';
+  producten += donatieRij;
 
   const opmHTML = opmerkingen
     ? `<div class="meta-item" style="grid-column:1/-1"><div class="meta-label">💬 Opmerkingen</div><div class="meta-value" style="color:#e67e00">${opmerkingen}</div></div>`
@@ -454,7 +488,7 @@ function pakbonHTML(o, i) {
         <div class="naam">${naam}</div>
         <div class="tijdstip">${tijdstip}</div>
       </div>
-      <span class="betaling-badge ${badgeClass}">${badgeText}</span>
+      <span class="betaling-badge ${badgeClass}" id="badge-${i}">${badgeText}</span>
     </div>
     <div class="pakbon-body">
       <div class="products">${producten}</div>
@@ -477,10 +511,29 @@ function pakbonHTML(o, i) {
       <input type="checkbox" id="check-${i}" onchange="toggleAfgehandeld(${i})">
       <label for="check-${i}">✅ Bestelling afgehandeld / uitgeleverd</label>
     </div>
+    ${isTikkie ? `<div class="tikkie-toggle">
+      <label class="switch">
+        <input type="checkbox" id="tikkie-${i}" onchange="toggleTikkie(${i})">
+        <span class="slider"></span>
+      </label>
+      <label for="tikkie-${i}">📱 Tikkie ontvangen / betaald</label>
+    </div>` : ''}
   </div>`;
 }
 
-function toggleAfgehandeld(i) {
+function toggleTikkie(i) {
+    const checked = document.getElementById('tikkie-' + i).checked;
+    const badge = document.getElementById('badge-' + i);
+    if (checked) {
+      badge.textContent = '📱 Tikkie – betaald ✓';
+      badge.classList.add('betaald');
+    } else {
+      badge.textContent = '📱 Tikkie – nog niet betaald';
+      badge.classList.remove('betaald');
+    }
+  }
+
+  function toggleAfgehandeld(i) {
   const pakbon = document.getElementById('pakbon-' + i);
   const checked = document.getElementById('check-' + i).checked;
   pakbon.style.opacity = checked ? '0.4' : '1';
@@ -489,5 +542,6 @@ function toggleAfgehandeld(i) {
 
 loadCSV();
 </script>
+
 </body>
 </html>
