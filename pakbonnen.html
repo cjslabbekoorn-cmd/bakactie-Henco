@@ -249,8 +249,6 @@ function druk(i) {
   if (donatie > 0) prod += '<div class="pr"><div class="pq" style="background:#1a6e3c">1</div><div class="pn">Extra donatie</div><div class="pp" style="color:#1a6e3c">EUR '+donatie.toFixed(2).replace('.',',')+'</div></div>';
   var opmH2 = opm ? '<div style="grid-column:1/-1"><div class="ml">Opmerkingen</div><div class="mv" style="color:#e67e00;font-weight:600">'+opm+'</div></div>' : '';
   var donH2 = donatie > 0 ? '<div style="background:#e8f0fb;color:#1a4f8a;border-radius:7px;padding:5px 12px;font-size:0.8rem;font-weight:600">Donatie EUR '+donatie.toFixed(2).replace('.',',')+'</div>' : '';
-  var w = window.open('', '_blank');
-  if (!w) { alert('Popup geblokkeerd - sta popups toe voor deze pagina'); return; }
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Pakbon</title>'
     + '<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">'
     + '<style>'
@@ -299,8 +297,11 @@ function druk(i) {
 + '</body></html>';
 ```
 
-w.document.write(html);
-w.document.close();
+var blob = new Blob([html], {type: ‘text/html’});
+var url = URL.createObjectURL(blob);
+var w = window.open(url, ‘_blank’);
+if (!w) { alert(‘Sta popups toe voor deze pagina en probeer opnieuw’); }
+setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
 }
 
 laad();
