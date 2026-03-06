@@ -512,7 +512,7 @@
           <option value="Donderdag 19 maart">Donderdag 19 maart</option>
           <option value="Vrijdag 20 maart">Vrijdag 20 maart</option>
           <option value="Zaterdag 21 maart">Zaterdag 21 maart</option>
-          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" style="display:none">🚚 Levering Zeeland – zaterdag 29 maart</option>
+          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" disabled hidden>🚚 Levering Zeeland – zaterdag 29 maart</option>
         </select>
       </div>
       <div class="form-row">
@@ -590,13 +590,13 @@
     const isZeeland = /^(43|44|45)\d{2}/.test(clean);
     const is8032    = /^8032/.test(clean);
     // Reset
-    document.getElementById('opt-zeeland').style.display = 'none';
+    const optZ = document.getElementById('opt-zeeland'); optZ.disabled = true; optZ.hidden = true;
     document.getElementById('msg-zeeland').style.display = 'none';
     document.getElementById('row-locatie').style.display = 'none';
     document.getElementById('row-dag-dagdeel').style.display = '';
     if (document.getElementById('day').value === 'za-29') document.getElementById('day').value = '';
     if (isZeeland) {
-      document.getElementById('opt-zeeland').style.display = '';
+      optZ.disabled = false; optZ.hidden = false;
       document.getElementById('msg-zeeland').style.display = 'block';
       document.getElementById('row-dag-dagdeel').style.display = 'none';
       document.getElementById('day').value = 'za-29';
