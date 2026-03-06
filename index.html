@@ -27,7 +27,6 @@
     min-height: 100vh;
   }
 
-  /* === HERO === */
   .hero {
     background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 60%, #1e6fa8 100%);
     padding: 48px 24px 80px;
@@ -93,14 +92,12 @@
     animation: fadeDown 0.6s 0.2s ease both;
   }
 
-  /* === CONTENT === */
   .container {
     max-width: 680px;
     margin: 0 auto;
     padding: 0 20px 60px;
   }
 
-  /* === STORY === */
   .story-card {
     background: white;
     border-radius: 20px;
@@ -136,7 +133,6 @@
   }
   .donate-link:hover { background: var(--blue-light); transform: translateY(-1px); }
 
-  /* === SECTION TITLE === */
   .section-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
@@ -154,7 +150,6 @@
     border-radius: 2px;
   }
 
-  /* === PRODUCTS === */
   .products {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -210,7 +205,6 @@
     border-radius: 20px;
   }
 
-  /* === DEADLINE BANNER === */
   .deadline-banner {
     background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
     color: white;
@@ -228,7 +222,6 @@
   .deadline-text strong { display: block; font-size: 1rem; margin-bottom: 2px; }
   .deadline-text span { font-size: 0.875rem; opacity: 0.9; }
 
-  /* === FORM === */
   .order-form {
     background: white;
     border-radius: 20px;
@@ -283,7 +276,6 @@
   }
   @media (max-width: 480px) { .form-row-half { grid-template-columns: 1fr; } }
 
-  /* Qty controls */
   .qty-row {
     display: flex;
     align-items: center;
@@ -320,7 +312,6 @@
     font-size: 1rem;
   }
 
-  /* Total */
   .total-row {
     display: flex;
     justify-content: space-between;
@@ -332,7 +323,6 @@
   .total-label { font-weight: 600; font-size: 1rem; color: var(--blue); }
   .total-amount { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--orange); font-weight: 700; }
 
-  /* Submit */
   .submit-btn {
     width: 100%;
     padding: 16px;
@@ -352,7 +342,6 @@
   .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,79,138,0.4); }
   .submit-btn:active { transform: none; }
 
-  /* Success */
   .success-msg {
     display: none;
     background: #e8f5e9;
@@ -366,7 +355,6 @@
     font-size: 0.95rem;
   }
 
-  /* === FOOTER === */
   .footer {
     text-align: center;
     padding: 32px 20px;
@@ -376,7 +364,6 @@
   .footer a { color: var(--blue); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
 
-  /* Animations */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-16px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -394,7 +381,6 @@
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
   <div class="badge">🎗️ Alpe d'HuZes 2026</div>
   <h1>Bak mee voor een <em>goed doel!</em></h1>
@@ -408,7 +394,6 @@
 
 <div class="container">
 
-  <!-- STORY -->
   <div class="story-card">
     <p>Op <strong>4 juni 2026</strong> doe ik mee aan de <strong>Alpe d'HuZes</strong>. We gaan zoveel mogelijk geld inzamelen voor onderzoek naar kanker en ter verbetering van de kwaliteit van leven van mensen met kanker.</p>
     <p>Om dit te steunen organiseer ik een <strong>bakactie</strong> 🧁 Bestel jij ook iets lekkers?</p>
@@ -417,7 +402,6 @@
     </a>
   </div>
 
-  <!-- PRODUCTS -->
   <h2 class="section-title animate delay-1">Wat kun je bestellen?</h2>
 
   <div class="products animate delay-1">
@@ -435,7 +419,6 @@
     </div>
   </div>
 
-  <!-- DEADLINE -->
   <div class="deadline-banner animate delay-2">
     <div class="deadline-icon">📅</div>
     <div class="deadline-text">
@@ -444,7 +427,6 @@
     </div>
   </div>
 
-  <!-- ORDER FORM -->
   <h2 class="section-title animate delay-2">Bestelformulier</h2>
 
   <div class="order-form animate delay-3">
@@ -468,6 +450,22 @@
     <div class="form-row">
       <label>Telefoonnummer <span id="phone-required-label" style="display:none;color:var(--orange);font-size:0.85rem;">(verplicht bij tikkie)</span></label>
       <input type="text" id="phone" placeholder="06 – xxxxxxxx">
+    </div>
+    <div class="form-row">
+      <label>Postcode <span style="font-weight:400;color:#888;font-size:0.85rem;text-transform:none">(optioneel)</span></label>
+      <input type="text" id="postcode" placeholder="bijv. 4382 AA of 8032 AB" maxlength="7" oninput="checkPostcode(this.value)" autocomplete="postal-code">
+      <div id="msg-zeeland" style="display:none;margin-top:8px;padding:10px 14px;background:#e8f5e9;border-radius:8px;color:#1a6e3c;font-size:0.85rem;font-weight:600">
+        &#x2705; Zeeuwse postcode herkend &#x2013; levering op zaterdag 29 maart geselecteerd!
+      </div>
+    </div>
+
+    <div class="form-row" id="row-locatie" style="display:none">
+      <label>Ophaallocatie Zwolle *</label>
+      <select id="locatie">
+        <option value="">&#x2014; Kies een locatie &#x2014;</option>
+        <option value="Punterdiep, Zwolle">Punterdiep, Zwolle</option>
+        <option value="Flora Bilderbeekstraat, Zwolle">Flora Bilderbeekstraat, Zwolle</option>
+      </select>
     </div>
 
     <div class="form-row">
@@ -508,12 +506,13 @@
         <label>Voorkeursdag voor afhalen *</label>
         <select id="day" required>
           <option value="">— Kies een dag —</option>
-          <option value="ma-16">Maandag 16 maart</option>
-          <option value="di-17">Dinsdag 17 maart</option>
-          <option value="wo-18">Woensdag 18 maart</option>
-          <option value="do-19">Donderdag 19 maart</option>
-          <option value="vr-20">Vrijdag 20 maart</option>
-          <option value="za-21">Zaterdag 21 maart</option>
+          <option value="Maandag 16 maart">Maandag 16 maart</option>
+          <option value="Dinsdag 17 maart">Dinsdag 17 maart</option>
+          <option value="Woensdag 18 maart">Woensdag 18 maart</option>
+          <option value="Donderdag 19 maart">Donderdag 19 maart</option>
+          <option value="Vrijdag 20 maart">Vrijdag 20 maart</option>
+          <option value="Zaterdag 21 maart">Zaterdag 21 maart</option>
+          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" style="display:none">🚚 Levering Zeeland – zaterdag 29 maart</option>
         </select>
       </div>
       <div class="form-row">
@@ -565,153 +564,43 @@
       🎉 Bedankt voor je bestelling! Je bestelling is geregistreerd. We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
     </div>
     <div id="error-msg" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:12px;padding:20px;text-align:center;color:#c62828;font-weight:500;margin-top:16px;font-size:0.95rem;">
-      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd5d8d3ded2cdc8d1d1d8d38ffdd5d2c9d0dcd4d193ded2d0">[email&#160;protected]</a>.
+      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via hencopullen2@hotmail.com.
     </div>
 
   </div>
 
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
   <p>Opbrengst gaat volledig naar <strong>Alpe d'HuZes</strong> — kankeronderzoek &amp; kwaliteit van leven.<br>
   <a href="https://inschrijving.opgevenisgeenoptie.nl/fundraisers/deltionteam7" target="_blank">Doneer rechtstreeks via de inzamelingsactie →</a></p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
-  // Token in delen om automatische detectie te voorkomen
   const _t = ['sby6qz_phg','1k6GuPa5bX','hPDLnysagY','aMpWW1Ukwa'].map(s=>s.split('').reverse().join('')).join('');
   const GH_TOKEN = _t;
   const GH_OWNER = 'cjslabbekoorn-cmd';
   const GH_REPO  = 'bakactie-Henco';
   const GH_FILE  = 'bestellingen.csv';
-
-  function flavorSelectHTML(i) {
-    return `<select id="cupcake-flavor-${i}" style="margin-bottom:8px;">
-      <option value="">— Set ${i}: kies smaak —</option>
-      <option value="2x stroopwafel">🍯 2× Stroopwafel</option>
-      <option value="2x chocolade">🍫 2× Chocolade</option>
-      <option value="1x stroopwafel + 1x chocolade">🍯🍫 1× Stroopwafel + 1× Chocolade</option>
-    </select>`;
-  }
-
-  function updateFlavorSelects() {
-    const container = document.getElementById('cupcake-flavors-container');
-    const row = document.getElementById('cupcake-flavor-row');
-    if (qty.cup === 0) { row.style.display = 'none'; container.innerHTML = ''; return; }
-    row.style.display = 'block';
-    const current = container.querySelectorAll('select').length;
-    if (qty.cup > current) {
-      for (let i = current + 1; i <= qty.cup; i++) {
-        container.insertAdjacentHTML('beforeend', flavorSelectHTML(i));
-      }
-    } else {
-      while (container.querySelectorAll('select').length > qty.cup) {
-        container.removeChild(container.lastChild);
-      }
+  function checkPostcode(val) {
+    const clean = val.replace(/\s/g, '').toUpperCase();
+    const isZeeland = /^(43|44|45)\d{2}/.test(clean);
+    const is8032    = /^8032/.test(clean);
+    document.getElementById('opt-zeeland').style.display = 'none';
+    document.getElementById('msg-zeeland').style.display = 'none';
+    document.getElementById('row-locatie').style.display = 'none';
+    if (document.getElementById('day').value === 'za-29') document.getElementById('day').value = '';
+    if (isZeeland) {
+      document.getElementById('opt-zeeland').style.display = '';
+      document.getElementById('msg-zeeland').style.display = 'block';
+      document.getElementById('day').value = 'za-29';
+      document.getElementById('dagdeel').value = 'middag';
+    } else if (is8032) {
+      document.getElementById('row-locatie').style.display = 'block';
     }
-  }
-
-  function changeQty(item, delta) {
-    qty[item] = Math.max(0, qty[item] + delta);
-    document.getElementById('qty-' + item).textContent = qty[item];
-    if (item === 'cup') updateFlavorSelects();
-    updateTotal();
-  }
-
-  function updateTotal() {
-    const donation = parseFloat(document.getElementById('donation').value) || 0;
-    const total = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
-    document.getElementById('total').textContent = '€ ' + total.toFixed(2).replace('.', ',');
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('payment').addEventListener('change', function() {
-      const isTikkie = this.value === 'tikkie vooraf';
-      document.getElementById('phone-required-label').style.display = isTikkie ? 'inline' : 'none';
-      document.getElementById('phone').style.borderColor = isTikkie ? 'var(--orange)' : '#e8eef6';
-    });
-  });
-
-  async function logToGitHub(row, orderTotal, orderDonation) {
-    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-    const headers = {
-      'Authorization': `token ${GH_TOKEN}`,
-      'Content-Type': 'application/json'
-    };
-
-    // 1. Probeer bestaand bestand op te halen
-    let sha = null;
-    let existing = '';
-    try {
-      const res = await fetch(apiUrl, { headers });
-      if (res.ok) {
-        const data = await res.json();
-        sha = data.sha;
-        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g, '')), c => c.charCodeAt(0));
-        existing = new TextDecoder('utf-8').decode(bytes);
-      }
-    } catch(e) {}
-
-    // 2. Voeg header toe als het bestand nieuw is
-    const header = 'Tijdstip,Naam,Email,Telefoon,Kruidkoek,Cupcakes,Smaken,Totaal,Dag,Dagdeel,Betaalvoorkeur,Opmerkingen,Donatie\n';
-    const newContent = existing ? existing + row + '\n' : header + row + '\n';
-
-    // 3. Schrijf terug naar GitHub
-    const body = {
-      message: `Nieuwe bestelling`,
-      content: btoa(unescape(encodeURIComponent(newContent))),
-      ...(sha ? { sha } : {})
-    };
-
-    const putRes = await fetch(apiUrl, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(body)
-    });
-
-    if (!putRes.ok) throw new Error('GitHub write failed');
-
-    // 4. Update stats.json
-    await updateStats(orderTotal, orderDonation);
-  }
-
-  async function updateStats(orderTotal, orderDonation) {
-    const statsUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/stats.json`;
-    const headers = { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' };
-
-    let sha = null, count = 0, totaal = 0, donaties = 0;
-    try {
-      const res = await fetch(statsUrl, { headers });
-      if (res.ok) {
-        const data = await res.json();
-        sha = data.sha;
-        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g,'')), c => c.charCodeAt(0));
-        const stats = JSON.parse(new TextDecoder('utf-8').decode(bytes));
-        count = stats.count || 0;
-        totaal = stats.totaal || 0;
-        donaties = stats.donaties || 0;
-      }
-    } catch(e) {}
-
-    const newStats = {
-      count: count + 1,
-      totaal: Math.round((totaal + orderTotal) * 100) / 100,
-      donaties: Math.round((donaties + (orderDonation || 0)) * 100) / 100
-    };
-
-    await fetch(statsUrl, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        message: 'Stats update',
-        content: btoa(JSON.stringify(newStats)),
-        ...(sha ? { sha } : {})
-      })
-    });
   }
 
   async function submitOrder() {
@@ -724,6 +613,7 @@
     const payment  = document.getElementById('payment').value;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
     const notes    = document.getElementById('notes').value.trim();
+    const locatie   = document.getElementById('locatie').value;
     const totalQty = qty.kruid + qty.cup;
 
     if (!fname || !lname)              { alert('Vul je naam in.'); return; }
@@ -744,8 +634,10 @@
     if (payment === 'tikkie vooraf' && !phone) {
       alert('Vul je telefoonnummer in — dit is nodig om het tikkie te sturen.'); return;
     }
+    if (document.getElementById('row-locatie').style.display !== 'none' && !locatie) {
+      alert('Kies een ophaallocatie.'); return;
+    }
 
-    // Bouw smakenlijst
     let smaken = '';
     if (qty.cup > 0) {
       const parts = [];
@@ -755,12 +647,12 @@
       smaken = parts.join(' | ');
     }
 
-    const dayText = document.getElementById('day').options[document.getElementById('day').selectedIndex].text;
+    const dayText = document.getElementById('day').value;
     const total   = qty.kruid * prices.kruid + qty.cup * prices.cup + donation;
     const now     = new Date().toLocaleString('nl-NL');
 
-    // CSV-rij (aanhalingstekens om velden met komma's)
     const escape = v => `"${String(v).replace(/"/g, '""')}"`;
+
     const row = [
       escape(now),
       escape(`${fname} ${lname}`),
@@ -773,11 +665,10 @@
       escape(dayText),
       escape(dagdeel),
       escape(payment),
-      escape(notes),
+      escape(locatie ? 'Locatie: ' + locatie + (notes ? ' | ' + notes : '') : notes),
       donation > 0 ? donation.toFixed(2) : ''
     ].join(',');
 
-    // UI: laden
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
     btn.textContent = '⏳  Bestelling opslaan…';
