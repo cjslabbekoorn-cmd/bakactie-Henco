@@ -54,6 +54,7 @@ input:checked + .slider:before { transform: translateX(18px); }
 
 <script>
 var tstate = {};
+try { var opgeslagen = localStorage.getItem('tstate'); if (opgeslagen) tstate = JSON.parse(opgeslagen); } catch(e) {}
 
 function laad() {
   var xhr = new XMLHttpRequest();
@@ -104,6 +105,15 @@ function verwerk(tekst) {
     html += kaart(orders[k], k);
   }
   document.getElementById('kaarten').innerHTML = html;
+  // Herstel tikkie state
+  for (var idx in tstate) {
+    if (tstate[idx]) {
+      var el = document.getElementById('tik' + idx);
+      var badge = document.getElementById('badge' + idx);
+      if (el) el.checked = true;
+      if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; }
+    }
+  }
 }
 
 function parseCsvRegel(r) {
@@ -174,6 +184,7 @@ function wisselTikkie(idx) {
   var el = document.getElementById('tik' + idx);
   var badge = document.getElementById('badge' + idx);
   tstate[idx] = el.checked;
+  try { localStorage.setItem('tstate', JSON.stringify(tstate)); } catch(e) {}
   if (el.checked) {
     badge.textContent = 'Betaald';
     badge.className = 'badge badge-betaald';
