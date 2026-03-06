@@ -479,7 +479,7 @@ to   { opacity: 1; transform: translateY(0); }
 </div>
 
 <div class="form-row">
-  <label>Vul hier je postcode in.</label>
+  <label>Woon je in Zeeland? <span style="font-weight:400;color:#888;font-size:0.85rem">Vul je postcode in voor levering</span></label>
   <input type="text" id="postcode" placeholder="bijv. 4382 AA" maxlength="7" oninput="checkPostcode(this.value)" autocomplete="postal-code">
   <div id="zeeland-msg" style="display:none;margin-top:8px;padding:10px 14px;background:#e8f5e9;border-radius:8px;color:#1a6e3c;font-size:0.82rem;font-weight:600">
     ✅ Zeeuwse postcode herkend &mdash; levering op zaterdag 29 maart is geselecteerd!
@@ -543,8 +543,17 @@ to   { opacity: 1; transform: translateY(0); }
   </div>
 </div>
 
-<div class="form-row">
-  <label>Betaalvoorkeur *</label>
+<div class="form-row" id="locatie-row" style="display:none">
+    <label>Ophaallocatie *</label>
+    <select id="locatie">
+      <option value="">— Kies een locatie —</option>
+      <option value="Punterdiep">Punterdiep, Zwolle</option>
+      <option value="Flora Bilderbeekstraat">Flora Bilderbeekstraat, Zwolle</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label>Betaalvoorkeur *</label>
   <select id="payment" required>
     <option value="">— Kies hoe je wilt betalen —</option>
     <option value="op locatie">💵 Betalen op locatie (contant, gepast graag)</option>
@@ -731,6 +740,37 @@ await fetch(statsUrl, {
     ...(sha ? { sha } : {})
   })
 });
+```
+
+}
+
+function checkPostcode(val) {
+const clean = val.replace(/\s/g, ‘’).toUpperCase();
+const isZeeland = /^(43|44|45)\d{2}/.test(clean);
+const is8032    = /^8032/.test(clean);
+const optie     = document.getElementById(‘zeeland-optie’);
+const msg       = document.getElementById(‘zeeland-msg’);
+const dag       = document.getElementById(‘day’);
+const locRow    = document.getElementById(‘locatie-row’);
+const locSel    = document.getElementById(‘locatie’);
+
+```
+// Reset
+optie.style.display  = 'none';
+msg.style.display    = 'none';
+locRow.style.display = 'none';
+locSel.required      = false;
+if (dag.value === 'za-29') dag.value = '';
+
+if (isZeeland) {
+  optie.style.display = '';
+  msg.style.display   = 'block';
+  dag.value = 'za-29';
+  document.getElementById('dagdeel').value = 'middag';
+} else if (is8032) {
+  locRow.style.display = 'block';
+  locSel.required      = true;
+}
 ```
 
 }
