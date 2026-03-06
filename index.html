@@ -501,7 +501,7 @@
       </div>
     </div>
 
-    <div class="form-row-half">
+    <div class="form-row-half" id="row-dag-dagdeel">
       <div class="form-row">
         <label>Voorkeursdag voor afhalen *</label>
         <select id="day" required>
@@ -564,7 +564,7 @@
       🎉 Bedankt voor je bestelling! Je bestelling is geregistreerd. We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
     </div>
     <div id="error-msg" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:12px;padding:20px;text-align:center;color:#c62828;font-weight:500;margin-top:16px;font-size:0.95rem;">
-      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via hencopullen2@hotmail.com.
+      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="18707d767b77686d74747d762a5870776c75797174367b7775">[email&#160;protected]</a>.
     </div>
 
   </div>
@@ -576,7 +576,7 @@
   <a href="https://inschrijving.opgevenisgeenoptie.nl/fundraisers/deltionteam7" target="_blank">Doneer rechtstreeks via de inzamelingsactie →</a></p>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
@@ -589,13 +589,16 @@
     const clean = val.replace(/\s/g, '').toUpperCase();
     const isZeeland = /^(43|44|45)\d{2}/.test(clean);
     const is8032    = /^8032/.test(clean);
+    // Reset
     document.getElementById('opt-zeeland').style.display = 'none';
     document.getElementById('msg-zeeland').style.display = 'none';
     document.getElementById('row-locatie').style.display = 'none';
+    document.getElementById('row-dag-dagdeel').style.display = '';
     if (document.getElementById('day').value === 'za-29') document.getElementById('day').value = '';
     if (isZeeland) {
       document.getElementById('opt-zeeland').style.display = '';
       document.getElementById('msg-zeeland').style.display = 'block';
+      document.getElementById('row-dag-dagdeel').style.display = 'none';
       document.getElementById('day').value = 'za-29';
       document.getElementById('dagdeel').value = 'middag';
     } else if (is8032) {
@@ -682,13 +685,4 @@
       document.getElementById('error-msg').style.display = 'block';
       document.getElementById('error-msg').innerHTML = `
         <strong>Er ging iets mis bij het opslaan.</strong><br>
-        Stuur je bestelling per e-mail naar <a href="mailto:hencopullen2@hotmail.com">hencopullen2@hotmail.com</a>.
-      `;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✉️ \u00a0Bestelling plaatsen';
-    }
-  }
-</script>
-</body>
-</html>
+        Stuur je bestelling pe
