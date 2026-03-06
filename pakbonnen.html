@@ -44,17 +44,75 @@ h1 { background: #1a4f8a; color: #fff; margin: 0; padding: 16px 20px; font-size:
 .slider:before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .25s; }
 input:checked + .slider { background: #1a6e3c; }
 input:checked + .slider:before { transform: translateX(18px); }
+
+@media print {
+body > * { display: none !important; }
+#printdiv { display: block !important; }
+}
+#printdiv { display: none; font-family: sans-serif; padding: 20mm; }
+#printdiv h2 { font-size: 1.8rem; margin-bottom: 4px; }
+#printdiv .psub { color: #888; font-size: 0.8rem; margin-bottom: 16px; }
+#printdiv .pbadge { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 16px; }
+#printdiv .pregel { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+#printdiv .pregel:last-child { border-bottom: none; }
+#printdiv .pmeta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f5f7fb; border-radius: 8px; padding: 14px; margin-top: 16px; }
+#printdiv .pml { font-size: 0.65rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
+#printdiv .pmv { font-size: 0.9rem; font-weight: 500; margin-top: 2px; }
+#printdiv .ptotaal { margin-top: 24px; border-top: 3px dashed #ccc; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+#printdiv .ptl { font-size: 0.65rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
+#printdiv .ptb { font-size: 2rem; font-weight: 700; color: #1a4f8a; }
 </style>
+
 </head>
 <body>
 <h1>Pakbonnen &ndash; Bakactie Alpe d&#x27;HuZes</h1>
+<div id="printdiv"></div>
 <div id="info">Laden...</div>
 <div id="totalen"></div>
 <div id="kaarten"><p style="padding:20px;color:#888">Bestellingen laden...</p></div>
 
 <script>
 var tstate = {};
+var orders = [];
 try { var opgeslagen = localStorage.getItem('tstate'); if (opgeslagen) tstate = JSON.parse(opgeslagen); } catch(e) {}
+
+
+function druk(idx) {
+  var o = orders[idx];
+  var naam = o[1]||'', tijd = o[0]||'', email = o[2]||'', tel = o[3]||'';
+  var kruid = parseInt(o[4])||0, cup = parseInt(o[5])||0, smaken = o[6]||'';
+  var totaal = parseFloat(o[7])||0, dag = o[8]||'', dagdeel = o[9]||'';
+  var betaling = o[10]||'', opm = o[11]||'', donatie = parseFloat(o[12])||0;
+  var isTikkie = betaling.toLowerCase().indexOf('tikkie') >= 0;
+  var betaald = isTikkie && tstate[idx];
+  var badgeTxt = isTikkie ? (betaald ? 'Tikkie - betaald' : 'Tikkie - nog niet betaald') : 'Contant - betalen op locatie';
+  var badgeStl = isTikkie ? (betaald ? 'background:#e8f5e9;color:#1a6e3c' : 'background:#fff3e0;color:#f07d00') : 'background:#e8f5e9;color:#1a6e3c';
+
+  var prod = '';
+  if (kruid > 0) prod += '<div class="pregel"><span>&#x1F96E; Kruidkoek x'+kruid+'</span><span style="color:#f07d00;font-weight:700">&euro; '+(kruid*7.5).toFixed(2).replace('.',',')+'</span></div>';
+  if (cup > 0) prod += '<div class="pregel"><span>&#x1F9C1; Cupcakes x'+cup+(smaken ? '<br><small style="color:#888">'+smaken+'</small>' : '')+'</span><span style="color:#f07d00;font-weight:700">&euro; '+(cup*6).toFixed(2).replace('.',',')+'</span></div>';
+  if (donatie > 0) prod += '<div class="pregel"><span>&#x1F499; Extra donatie</span><span style="color:#1a6e3c;font-weight:700">&euro; '+donatie.toFixed(2).replace('.',',')+'</span></div>';
+
+  var opmH = opm ? '<div style="grid-column:1/-1"><div class="pml">Opmerkingen</div><div class="pmv" style="color:#e67e00">'+opm+'</div></div>' : '';
+
+  document.getElementById('printdiv').innerHTML =
+    '<h2>'+naam+'</h2>'
+    + '<div class="psub">Besteld op '+tijd+'</div>'
+    + '<span class="pbadge" style="'+badgeStl+'">'+badgeTxt+'</span>'
+    + prod
+    + '<div class="pmeta">'
+    + '<div><div class="pml">Afhaaldag</div><div class="pmv">'+dag+'</div></div>'
+    + '<div><div class="pml">Dagdeel</div><div class="pmv">'+dagdeel+'</div></div>'
+    + '<div><div class="pml">Email</div><div class="pmv" style="font-size:0.78rem">'+email+'</div></div>'
+    + '<div><div class="pml">Telefoon</div><div class="pmv">'+(tel||'-')+'</div></div>'
+    + opmH
+    + '</div>'
+    + '<div class="ptotaal"><div><div class="ptl">Totaalbedrag</div><div class="ptb">&euro; '+totaal.toFixed(2).replace('.',',')+'</div></div>'
+    + (donatie > 0 ? '<div style="background:#e8f0fb;color:#1a4f8a;border-radius:7px;padding:6px 14px;font-size:0.85rem;font-weight:600">Donatie &euro; '+donatie.toFixed(2).replace('.',',')+'</div>' : '')
+    + '</div>';
+
+  window.print();
+}
 
 function laad() {
   var xhr = new XMLHttpRequest();
@@ -75,7 +133,7 @@ function laad() {
 
 function verwerk(tekst) {
   var regels = tekst.trim().split('\n');
-  var orders = [];
+  orders = [];
   for (var i = 1; i < regels.length; i++) {
     var r = regels[i].trim();
     if (!r) continue;
@@ -175,6 +233,9 @@ function kaart(o, idx) {
     + '</div>'
     + '<div class="kaart-voet">'
     + '<div><div class="totaal-label">Totaal</div><div class="totaal-bedrag">&euro; ' + totaal.toFixed(2).replace('.', ',') + '</div></div>'
+    + '</div>'
+    + '<div style="border-top:1px solid #eef2f8;padding:10px 16px;text-align:right">'
+    + '<button onclick="druk(' + idx + ')" style="background:#1a4f8a;color:#fff;border:none;border-radius:7px;padding:7px 16px;font-size:0.8rem;font-weight:600;cursor:pointer">&#x1F5A8; Afdrukken</button>'
     + '</div>'
     + tikkieRij
     + '</div>';
