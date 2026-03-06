@@ -2,309 +2,185 @@
 
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pakbonnen - Bakactie Alpe d'HuZes</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--blue:#1a4f8a;--orange:#f07d00;--green:#1a6e3c;--light:#f5f7fb;--border:#dde4f0}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:var(--light);color:#222}
-    .toolbar{background:var(--blue);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-    .toolbar h1{font-family:'DM Serif Display',serif;color:#fff;font-size:1.1rem;font-weight:400}
-    .toolbar small{display:block;color:#aac4e8;font-size:0.72rem;margin-top:2px}
-
-```
-.filters{background:#fff;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.filters label{font-size:0.75rem;font-weight:700;color:#999}
-.filters select,.filters input{padding:5px 9px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:0.8rem;background:#fafbfd}
-.stats{padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap}
-.stat{background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 16px;min-width:110px}
-.stat-l{font-size:0.65rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.4px}
-.stat-v{font-size:1.3rem;font-weight:700;color:var(--blue);margin-top:2px}
-.stat-v.or{color:var(--orange)} .stat-v.gr{color:var(--green)}
-#status{padding:40px 20px;text-align:center;color:#888;font-size:0.9rem}
-#status.error{color:#c0392b}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;padding:0 20px 40px}
-.card{background:#fff;border-radius:12px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:opacity .3s,filter .3s}
-.card.done{opacity:.35;filter:grayscale(1)}
-.card-head{background:var(--blue);padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.card-head .naam{font-family:'DM Serif Display',serif;color:#fff;font-size:1.1rem;font-weight:400}
-.card-head .ts{color:#aac4e8;font-size:0.72rem;margin-top:2px}
-.badge{padding:4px 10px;border-radius:16px;font-size:0.7rem;font-weight:700;white-space:nowrap;flex-shrink:0}
-.b-tikkie-open{background:#fff3e0;color:var(--orange)}
-.b-tikkie-paid{background:#e8f5e9;color:var(--green)}
-.b-contant{background:#e8f5e9;color:var(--green)}
-.card-body{padding:14px 16px}
-.prow{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #f0f4fa}
-.prow:last-child{border-bottom:none}
-.pqty{background:var(--blue);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0}
-.pnm{font-weight:600;font-size:0.85rem;flex:1}
-.ppr{font-weight:700;color:var(--orange);font-size:0.85rem}
-.stag{display:inline-block;background:#eef2f8;color:#555;border-radius:4px;padding:2px 6px;font-size:0.68rem;margin:2px 2px 0 0}
-.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;background:var(--light);border-radius:8px;padding:10px 12px}
-.ml{font-size:0.62rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.3px}
-.mv{font-size:0.82rem;font-weight:500;margin-top:1px}
-.card-foot{border-top:2px dashed var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;background:#fafbfd}
-.tl{font-size:0.65rem;font-weight:700;color:#bbb;text-transform:uppercase}
-.tb{font-size:1.3rem;font-weight:700;color:var(--blue)}
-.don-b{background:#e8f0fb;color:var(--blue);border-radius:6px;padding:3px 9px;font-size:0.72rem;font-weight:600}
-.card-actions{border-top:1px solid var(--border)}
-.arow{display:flex;align-items:center;gap:9px;padding:9px 16px;border-bottom:1px solid #f0f4fa}
-.arow:last-child{border-bottom:none}
-.arow label{font-size:0.78rem;font-weight:600;color:#555;cursor:pointer;flex:1}
-.arow input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
-.switch{position:relative;display:inline-block;width:38px;height:21px;flex-shrink:0}
-.switch input{opacity:0;width:0;height:0}
-.sl{position:absolute;cursor:pointer;inset:0;background:#ddd;border-radius:21px;transition:.25s}
-.sl:before{content:"";position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
-input:checked+.sl{background:var(--green)}
-input:checked+.sl:before{transform:translateX(17px)}
-.btn-print{margin-left:auto;background:var(--blue);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit}
-.btn-print:hover{opacity:.85}
-```
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pakbonnen</title>
+<style>
+body { font-family: sans-serif; background: #f0f4fb; margin: 0; padding: 0; color: #222; }
+h1 { background: #1a4f8a; color: #fff; margin: 0; padding: 16px 20px; font-size: 1.1rem; font-weight: 600; }
+#info { padding: 8px 20px; background: #e8f0fb; font-size: 0.8rem; color: #555; }
+#totalen { display: flex; gap: 12px; padding: 16px 20px; flex-wrap: wrap; }
+.totaal-box { background: #fff; border-radius: 10px; padding: 12px 20px; border: 1px solid #d0daf0; min-width: 120px; }
+.totaal-box .label { font-size: 0.65rem; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: .4px; }
+.totaal-box .value { font-size: 1.5rem; font-weight: 700; color: #1a4f8a; margin-top: 2px; }
+.value.oranje { color: #f07d00; }
+.value.groen { color: #1a6e3c; }
+#kaarten { padding: 0 20px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 16px; }
+.kaart { background: #fff; border-radius: 12px; border: 1.5px solid #d0daf0; overflow: hidden; }
+.kaart-hoofd { background: #1a4f8a; padding: 12px 16px; display: flex; justify-content: space-between; align-items: flex-start; }
+.kaart-naam { color: #fff; font-size: 1rem; font-weight: 700; }
+.kaart-tijd { color: #aac4e8; font-size: 0.72rem; margin-top: 2px; }
+.badge { padding: 4px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+.badge-open { background: #fff3e0; color: #f07d00; }
+.badge-betaald { background: #e8f5e9; color: #1a6e3c; }
+.badge-contant { background: #e8f5e9; color: #1a6e3c; }
+.kaart-body { padding: 12px 16px; }
+.regel { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f4fa; font-size: 0.88rem; }
+.regel:last-child { border-bottom: none; }
+.regel-naam { font-weight: 600; }
+.regel-prijs { font-weight: 700; color: #f07d00; }
+.smaak { font-size: 0.7rem; color: #888; font-weight: 400; display: block; margin-top: 2px; }
+.meta { background: #f5f7fb; border-radius: 8px; padding: 10px 12px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem; }
+.meta-label { font-size: 0.62rem; font-weight: 700; color: #bbb; text-transform: uppercase; }
+.meta-val { margin-top: 1px; font-weight: 500; }
+.kaart-voet { border-top: 2px dashed #d0daf0; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; background: #fafbfd; }
+.totaal-label { font-size: 0.65rem; font-weight: 700; color: #bbb; text-transform: uppercase; }
+.totaal-bedrag { font-size: 1.3rem; font-weight: 700; color: #1a4f8a; }
+.tikkie-rij { border-top: 1px solid #eef2f8; padding: 10px 16px; display: flex; align-items: center; gap: 10px; background: #fffdf8; }
+.tikkie-rij label { font-size: 0.82rem; font-weight: 600; color: #555; cursor: pointer; }
+.switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: #ddd; border-radius: 22px; transition: .25s; }
+.slider:before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .25s; }
+input:checked + .slider { background: #1a6e3c; }
+input:checked + .slider:before { transform: translateX(18px); }
+</style>
 </head>
 <body>
-
-<div class="toolbar">
-  <div>
-    <h1>&#x1F4E6; Pakbonnen &#x2013; Bakactie Alpe d&#x27;HuZes</h1>
-    <small id="ts">Laden...</small>
-  </div>
-
-</div>
-
-<div class="filters">
-  <label>Dag:</label>
-  <select id="fdag" onchange="render()"><option value="">Alle dagen</option></select>
-  <label>Betaling:</label>
-  <select id="fbet" onchange="render()">
-    <option value="">Alles</option>
-    <option value="tikkie">Tikkie</option>
-    <option value="contant">Contant</option>
-  </select>
-  <label>Zoek:</label>
-  <input id="fzoek" placeholder="Naam of email..." oninput="render()" style="width:180px">
-</div>
-
-<div class="stats" id="stats"></div>
-<div id="status">&#x23F3; Bestellingen laden...</div>
-<div class="grid" id="grid"></div>
+<h1>Pakbonnen &ndash; Bakactie Alpe d&#x27;HuZes</h1>
+<div id="info">Laden...</div>
+<div id="totalen"></div>
+<div id="kaarten"><p style="padding:20px;color:#888">Bestellingen laden...</p></div>
 
 <script>
-var orders = [];
 var tstate = {};
-var astate = {};
 
 function laad() {
-  document.getElementById('status').textContent = 'Bestellingen laden...';
-  document.getElementById('status').className = '';
-  document.getElementById('status').style.display = 'block';
-  document.getElementById('grid').innerHTML = '';
-  document.getElementById('stats').innerHTML = '';
-  var url = 'https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?nc=' + Date.now();
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-  xhr.timeout = 15000;
-  xhr.onload = function() {
+  xhr.open('GET', 'https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now());
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
     if (xhr.status === 200) {
-      try {
-        orders = parseCSV(xhr.responseText);
-        document.getElementById('ts').textContent = 'Bijgewerkt: ' + new Date().toLocaleString('nl-NL');
-        document.getElementById('status').style.display = 'none';
-        vulDagen();
-        render();
-      } catch(e) { fout('Parse fout: ' + e.message); }
-    } else { fout('HTTP fout: ' + xhr.status); }
+      verwerk(xhr.responseText);
+    } else {
+      document.getElementById('kaarten').innerHTML = '<p style="padding:20px;color:red">Fout bij laden (status ' + xhr.status + ')</p>';
+    }
   };
-  xhr.onerror = function() { fout('Netwerkfout - controleer verbinding'); };
-  xhr.ontimeout = function() { fout('Timeout - probeer opnieuw'); };
+  xhr.onerror = function() {
+    document.getElementById('kaarten').innerHTML = '<p style="padding:20px;color:red">Netwerkfout</p>';
+  };
   xhr.send();
 }
 
-function fout(msg) {
-  var el = document.getElementById('status');
-  el.innerHTML = 'Fout: ' + msg + '<br><br><button onclick="laad()" style="margin-top:10px;padding:9px 18px;background:#1a4f8a;color:#fff;border:none;border-radius:7px;font-family:inherit;font-size:0.85rem;cursor:pointer">Opnieuw proberen</button>';
-  el.className = 'error';
-  el.style.display = 'block';
-}
-
-function parseCSV(txt) {
-  var lines = txt.trim().split('\n');
-  var res = [];
-  for (var i = 1; i < lines.length; i++) {
-    var line = lines[i].trim();
-    if (!line) continue;
-    var cols = [], inQ = false, cur = '';
-    for (var c = 0; c < line.length; c++) {
-      var ch = line[c];
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-      else { cur += ch; }
-    }
-    cols.push(cur.trim());
-    if (cols.length >= 8) res.push(cols);
+function verwerk(tekst) {
+  var regels = tekst.trim().split('\n');
+  var orders = [];
+  for (var i = 1; i < regels.length; i++) {
+    var r = regels[i].trim();
+    if (!r) continue;
+    var cols = parseCsvRegel(r);
+    if (cols.length >= 8) orders.push(cols);
   }
-  return res;
-}
 
-function vulDagen() {
-  var sel = document.getElementById('fdag');
-  var dagen = [];
-  orders.forEach(function(o) { if (o[8] && dagen.indexOf(o[8]) < 0) dagen.push(o[8]); });
-  sel.innerHTML = '<option value="">Alle dagen</option>';
-  dagen.forEach(function(d) { sel.innerHTML += '<option value="' + d + '">' + d + '</option>'; });
-}
+  document.getElementById('info').textContent = orders.length + ' bestellingen geladen';
 
-function render() {
-  var dag = document.getElementById('fdag').value;
-  var bet = document.getElementById('fbet').value;
-  var zoek = document.getElementById('fzoek').value.toLowerCase();
-  var filtered = orders.filter(function(o) {
-    if (dag && o[8] !== dag) return false;
-    var isTik = (o[10]||'').toLowerCase().indexOf('tikkie') >= 0;
-    if (bet === 'tikkie' && !isTik) return false;
-    if (bet === 'contant' && isTik) return false;
-    if (zoek && (o[1]||'').toLowerCase().indexOf(zoek) < 0 && (o[2]||'').toLowerCase().indexOf(zoek) < 0) return false;
-    return true;
-  });
-  var totaal = 0, tik = 0, con = 0, don = 0;
-  filtered.forEach(function(o) {
-    totaal += parseFloat(o[7]) || 0;
-    don += parseFloat(o[12]) || 0;
-    if ((o[10]||'').toLowerCase().indexOf('tikkie') >= 0) tik++; else con++;
-  });
-  document.getElementById('stats').innerHTML =
-    mkstat('Bestellingen', filtered.length, '') +
-    mkstat('Totaal omzet', '&euro; ' + totaal.toFixed(2).replace('.',','), 'or') +
-    mkstat('Tikkie', tik, '') +
-    mkstat('Contant', con, 'or') +
-    (don > 0 ? mkstat('Donaties', '&euro; ' + don.toFixed(2).replace('.',','), 'gr') : '');
+  var totaal = 0, tikkieAantal = 0, contantAantal = 0, donaties = 0;
+  for (var j = 0; j < orders.length; j++) {
+    totaal += parseFloat(orders[j][7]) || 0;
+    donaties += parseFloat(orders[j][12]) || 0;
+    if ((orders[j][10] || '').toLowerCase().indexOf('tikkie') >= 0) tikkieAantal++;
+    else contantAantal++;
+  }
+
+  document.getElementById('totalen').innerHTML =
+    box('Bestellingen', orders.length, '') +
+    box('Totaal', '&euro; ' + totaal.toFixed(2).replace('.', ','), 'oranje') +
+    box('Tikkie', tikkieAantal, '') +
+    box('Contant', contantAantal, '') +
+    (donaties > 0 ? box('Donaties', '&euro; ' + donaties.toFixed(2).replace('.', ','), 'groen') : '');
+
   var html = '';
-  filtered.forEach(function(o) { html += kaart(o, orders.indexOf(o)); });
-  document.getElementById('grid').innerHTML = html || '<p style="color:#bbb;padding:40px;grid-column:1/-1;text-align:center">Geen bestellingen gevonden.</p>';
-  filtered.forEach(function(o) {
-    var i = orders.indexOf(o);
-    if (tstate[i]) { var el = document.getElementById('tik-'+i); if (el) { el.checked = true; setBadge(i, true); } }
-    if (astate[i]) { var el2 = document.getElementById('chk-'+i); if (el2) { el2.checked = true; var c = document.getElementById('card-'+i); if(c) c.classList.add('done'); } }
-  });
-}
-
-function mkstat(l, v, cls) {
-  return '<div class="stat"><div class="stat-l">'+l+'</div><div class="stat-v '+cls+'">'+v+'</div></div>';
-}
-
-function kaart(o, i) {
-  var naam=o[1]||'', ts=o[0]||'', email=o[2]||'', tel=o[3]||'';
-  var kruid=parseInt(o[4])||0, cup=parseInt(o[5])||0, smaken=o[6]||'';
-  var totaal=parseFloat(o[7])||0, dag=o[8]||'', dagdeel=o[9]||'';
-  var betaling=o[10]||'', opm=o[11]||'', donatie=parseFloat(o[12])||0;
-  var isTik = betaling.toLowerCase().indexOf('tikkie') >= 0;
-  var prod = '';
-  if (kruid > 0) prod += '<div class="prow"><div class="pqty">'+kruid+'</div><div class="pnm">&#x1F9C2; Kruidkoek</div><div class="ppr">&euro; '+(kruid*7.5).toFixed(2).replace('.',',')+'</div></div>';
-  if (cup > 0) {
-    var tags = smaken.split('|').map(function(s){return s.trim();}).filter(Boolean).map(function(s){return '<span class="stag">'+s+'</span>';}).join('');
-    prod += '<div class="prow"><div class="pqty">'+cup+'</div><div class="pnm">&#x1F9C1; Cupcakes'+(tags ? '<br><span style="font-weight:400;font-size:0.7rem;color:#888">'+tags+'</span>' : '')+'</div><div class="ppr">&euro; '+(cup*6).toFixed(2).replace('.',',')+'</div></div>';
+  for (var k = 0; k < orders.length; k++) {
+    html += kaart(orders[k], k);
   }
-  if (donatie > 0) prod += '<div class="prow"><div class="pqty" style="background:#1a6e3c">1</div><div class="pnm">&#x1F499; Extra donatie</div><div class="ppr" style="color:#1a6e3c">&euro; '+donatie.toFixed(2).replace('.',',')+'</div></div>';
-  var opmH = opm ? '<div style="grid-column:1/-1"><div class="ml">Opmerkingen</div><div class="mv" style="color:#e67e00">'+opm+'</div></div>' : '';
-  var donH = donatie > 0 ? '<span class="don-b">&#x1F499; &euro; '+donatie.toFixed(2).replace('.',',')+'</span>' : '';
-  var tikRow = isTik ? '<div class="arow"><label class="switch"><input type="checkbox" id="tik-'+i+'" onchange="onTik('+i+')"><span class="sl"></span></label><label for="tik-'+i+'">Tikkie ontvangen / betaald</label></div>' : '';
-  return '<div class="card" id="card-'+i+'">'
-    +'<div class="card-head"><div><div class="naam">'+naam+'</div><div class="ts">'+ts+'</div></div>'
-    +'<span class="badge '+(isTik?'b-tikkie-open':'b-contant')+'" id="badge-'+i+'">'+(isTik?'Tikkie - nog niet betaald':'Contant - nog betalen')+'</span></div>'
-    +'<div class="card-body"><div>'+prod+'</div>'
-    +'<div class="meta"><div><div class="ml">Afhaaldag</div><div class="mv">'+dag+'</div></div><div><div class="ml">Dagdeel</div><div class="mv">'+dagdeel+'</div></div>'
-    +'<div><div class="ml">Email</div><div class="mv" style="font-size:0.72rem">'+email+'</div></div><div><div class="ml">Telefoon</div><div class="mv">'+(tel||'-')+'</div></div>'+opmH+'</div></div>'
-    +'<div class="card-foot"><div><div class="tl">Totaalbedrag</div><div class="tb">&euro; '+totaal.toFixed(2).replace('.',',')+'</div></div>'+donH+'</div>'
-    +'<div class="card-actions">'+tikRow
-    +'<div class="arow"><input type="checkbox" id="chk-'+i+'" onchange="onChk('+i+')"><label for="chk-'+i+'">Bestelling afgehandeld / uitgeleverd</label><button class="btn-print" onclick="druk('+i+')">Afdrukken</button></div>'
-    +'</div></div>';
+  document.getElementById('kaarten').innerHTML = html;
 }
 
-function setBadge(i, betaald) {
-  var b = document.getElementById('badge-'+i);
-  if (!b) return;
-  b.textContent = betaald ? 'Tikkie - betaald' : 'Tikkie - nog niet betaald';
-  b.className = 'badge ' + (betaald ? 'b-tikkie-paid' : 'b-tikkie-open');
-}
-function onTik(i) { var v = document.getElementById('tik-'+i).checked; tstate[i] = v; setBadge(i, v); }
-function onChk(i) { var v = document.getElementById('chk-'+i).checked; astate[i] = v; var c = document.getElementById('card-'+i); if(c) c.classList.toggle('done', v); }
-
-function druk(i) {
-  var o = orders[i];
-  var naam=o[1]||'', ts=o[0]||'', email=o[2]||'', tel=o[3]||'';
-  var kruid=parseInt(o[4])||0, cup=parseInt(o[5])||0, smaken=o[6]||'';
-  var totaal=parseFloat(o[7])||0, dag=o[8]||'', dagdeel=o[9]||'';
-  var betaling=o[10]||'', opm=o[11]||'', donatie=parseFloat(o[12])||0;
-  var isTik = betaling.toLowerCase().indexOf('tikkie') >= 0;
-  var betaald = isTik && tstate[i];
-  var badgeTxt = isTik ? (betaald ? 'Tikkie - betaald' : 'Tikkie - nog niet betaald') : 'Contant - betalen op locatie';
-  var badgeStl = isTik ? (betaald ? 'background:#e8f5e9;color:#1a6e3c' : 'background:#fff3e0;color:#f07d00') : 'background:#e8f5e9;color:#1a6e3c';
-  var prod = '';
-  if (kruid > 0) prod += '<div class="pr"><div class="pq">'+kruid+'</div><div class="pn">Kruidkoek</div><div class="pp">EUR '+(kruid*7.5).toFixed(2).replace('.',',')+'</div></div>';
-  if (cup > 0) {
-    var tags2 = smaken.split('|').map(function(s){return s.trim();}).filter(Boolean).map(function(s){return '<span class="st">'+s+'</span>';}).join('');
-    prod += '<div class="pr"><div class="pq">'+cup+'</div><div class="pn">Cupcakes'+(tags2?'<br><small style="font-weight:400;color:#888">'+tags2+'</small>':'')+'</div><div class="pp">EUR '+(cup*6).toFixed(2).replace('.',',')+'</div></div>';
+function parseCsvRegel(r) {
+  var cols = [], inQ = false, cur = '';
+  for (var i = 0; i < r.length; i++) {
+    var c = r[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+    else { cur += c; }
   }
-  if (donatie > 0) prod += '<div class="pr"><div class="pq" style="background:#1a6e3c">1</div><div class="pn">Extra donatie</div><div class="pp" style="color:#1a6e3c">EUR '+donatie.toFixed(2).replace('.',',')+'</div></div>';
-  var opmH2 = opm ? '<div style="grid-column:1/-1"><div class="ml">Opmerkingen</div><div class="mv" style="color:#e67e00;font-weight:600">'+opm+'</div></div>' : '';
-  var donH2 = donatie > 0 ? '<div style="background:#e8f0fb;color:#1a4f8a;border-radius:7px;padding:5px 12px;font-size:0.8rem;font-weight:600">Donatie EUR '+donatie.toFixed(2).replace('.',',')+'</div>' : '';
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Pakbon</title>'
-    + '<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">'
-    + '<style>'
-    + '*{box-sizing:border-box;margin:0;padding:0}'
-    + '@page{size:A4 portrait;margin:0}'
-    + 'html{width:210mm;height:297mm}'
-    + 'body{width:210mm;height:297mm;overflow:hidden;background:#fff;font-family:"DM Sans",sans-serif;display:flex;flex-direction:column}'
-    + '.hd{background:#1a4f8a;padding:14mm 14mm 10mm;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-shrink:0}'
-    + '.org{color:#aac4e8;font-size:0.7rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}'
-    + '.nm{font-family:"DM Serif Display",serif;color:#fff;font-size:1.9rem;line-height:1.15}'
-    + '.ts2{color:#aac4e8;font-size:0.78rem;margin-top:7px}'
-    + '.bdg{padding:6px 14px;border-radius:24px;font-size:0.78rem;font-weight:700;align-self:flex-start;margin-top:4px;white-space:nowrap}'
-    + '.bd{flex:1;padding:7mm 14mm;display:flex;flex-direction:column;gap:5mm;overflow:hidden}'
-    + '.stl{font-size:0.6rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}'
-    + '.prods{border:1.5px solid #dde4f0;border-radius:9px;overflow:hidden}'
-    + '.pr{display:flex;align-items:center;gap:11px;padding:9px 13px;border-bottom:1px solid #f0f4fa}'
-    + '.pr:last-child{border-bottom:none}'
-    + '.pq{background:#1a4f8a;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0}'
-    + '.pn{font-weight:600;font-size:0.88rem;flex:1}'
-    + '.pp{font-weight:700;color:#f07d00;font-size:0.88rem}'
-    + '.st{display:inline-block;background:#eef2f8;color:#555;border-radius:4px;padding:2px 6px;font-size:0.68rem;margin:2px 2px 0 0}'
-    + '.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f5f7fb;border-radius:8px;padding:10px 13px}'
-    + '.ml{font-size:0.6rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.3px}'
-    + '.mv{font-size:0.85rem;font-weight:500;margin-top:2px}'
-    + '.ft{border-top:3px dashed #dde4f0;padding:8px 14mm 12mm;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}'
-    + '.tl{font-size:0.6rem;font-weight:700;color:#bbb;text-transform:uppercase}'
-    + '.tb{font-size:1.9rem;font-weight:700;color:#1a4f8a;line-height:1}'
-    + '.br{text-align:center;color:#ccc;font-size:0.6rem;padding:0 14mm 5mm;flex-shrink:0}'
-    + '</style></head><body>'
+  cols.push(cur.trim());
+  return cols;
+}
 
-```
-+ '<div class="hd"><div><div class="org">Bakactie Alpe d\x27HuZes 2026</div><div class="nm">'+naam+'</div><div class="ts2">Besteld op '+ts+'</div></div>'
-+ '<span class="bdg" style="'+badgeStl+'">'+badgeTxt+'</span></div>'
-+ '<div class="bd">'
-+ '<div><div class="stl">Bestelling</div><div class="prods">'+prod+'</div></div>'
-+ '<div><div class="stl">Afhaalinformatie</div>'
-+ '<div class="meta">'
-+ '<div><div class="ml">Afhaaldag</div><div class="mv">'+dag+'</div></div>'
-+ '<div><div class="ml">Dagdeel</div><div class="mv">'+dagdeel+'</div></div>'
-+ '<div><div class="ml">Email</div><div class="mv" style="font-size:0.73rem">'+email+'</div></div>'
-+ '<div><div class="ml">Telefoon</div><div class="mv">'+(tel||'-')+'</div></div>'
-+ opmH2+'</div></div></div>'
-+ '<div class="ft"><div><div class="tl">Totaalbedrag</div><div class="tb">EUR '+totaal.toFixed(2).replace('.',',')+'</div></div>'+donH2+'</div>'
-+ '<div class="br">Bakactie Alpe d\x27HuZes - Deltionteam7</div>'
-+ '<scr'+'ipt>window.onload=function(){window.print();}<'+'/scr'+'ipt>'
-+ '</body></html>';
-```
+function box(label, waarde, cls) {
+  return '<div class="totaal-box"><div class="label">' + label + '</div><div class="value ' + cls + '">' + waarde + '</div></div>';
+}
 
-var blob = new Blob([html], {type: ‘text/html’});
-var url = URL.createObjectURL(blob);
-var w = window.open(url, ‘_blank’);
-if (!w) { alert(‘Sta popups toe voor deze pagina en probeer opnieuw’); }
-setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
+function kaart(o, idx) {
+  var naam = o[1] || '', tijd = o[0] || '', email = o[2] || '', tel = o[3] || '';
+  var kruid = parseInt(o[4]) || 0, cup = parseInt(o[5]) || 0, smaken = o[6] || '';
+  var totaal = parseFloat(o[7]) || 0;
+  var dag = o[8] || '', dagdeel = o[9] || '', betaling = o[10] || '';
+  var opm = o[11] || '', donatie = parseFloat(o[12]) || 0;
+  var isTikkie = betaling.toLowerCase().indexOf('tikkie') >= 0;
+
+  var producten = '';
+  if (kruid > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F9C2; Kruidkoek x' + kruid + '</span><span class="regel-prijs">&euro; ' + (kruid * 7.5).toFixed(2).replace('.', ',') + '</span></div>';
+  if (cup > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F9C1; Cupcakes x' + cup + (smaken ? '<span class="smaak">' + smaken + '</span>' : '') + '</span><span class="regel-prijs">&euro; ' + (cup * 6).toFixed(2).replace('.', ',') + '</span></div>';
+  if (donatie > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F499; Extra donatie</span><span class="regel-prijs" style="color:#1a6e3c">&euro; ' + donatie.toFixed(2).replace('.', ',') + '</span></div>';
+
+  var opmHtml = opm ? '<div style="grid-column:1/-1"><div class="meta-label">Opmerkingen</div><div class="meta-val" style="color:#e67e00">' + opm + '</div></div>' : '';
+
+  var tikkieRij = '';
+  if (isTikkie) {
+    tikkieRij = '<div class="tikkie-rij">'
+      + '<label class="switch"><input type="checkbox" id="tik' + idx + '" onchange="wisselTikkie(' + idx + ')"><span class="slider"></span></label>'
+      + '<label for="tik' + idx + '">Tikkie ontvangen &ndash; betaald</label>'
+      + '</div>';
+  }
+
+  var badgeKlasse = isTikkie ? 'badge-open' : 'badge-contant';
+  var badgeTekst = isTikkie ? 'Nog niet betaald' : 'Contant';
+
+  return '<div class="kaart">'
+    + '<div class="kaart-hoofd">'
+    + '<div><div class="kaart-naam">' + naam + '</div><div class="kaart-tijd">' + tijd + '</div></div>'
+    + '<span class="badge ' + badgeKlasse + '" id="badge' + idx + '">' + badgeTekst + '</span>'
+    + '</div>'
+    + '<div class="kaart-body">'
+    + producten
+    + '<div class="meta">'
+    + '<div><div class="meta-label">Afhaaldag</div><div class="meta-val">' + dag + '</div></div>'
+    + '<div><div class="meta-label">Dagdeel</div><div class="meta-val">' + dagdeel + '</div></div>'
+    + '<div><div class="meta-label">Email</div><div class="meta-val" style="font-size:0.75rem">' + email + '</div></div>'
+    + '<div><div class="meta-label">Telefoon</div><div class="meta-val">' + (tel || '-') + '</div></div>'
+    + opmHtml
+    + '</div>'
+    + '</div>'
+    + '<div class="kaart-voet">'
+    + '<div><div class="totaal-label">Totaal</div><div class="totaal-bedrag">&euro; ' + totaal.toFixed(2).replace('.', ',') + '</div></div>'
+    + '</div>'
+    + tikkieRij
+    + '</div>';
+}
+
+function wisselTikkie(idx) {
+  var el = document.getElementById('tik' + idx);
+  var badge = document.getElementById('badge' + idx);
+  tstate[idx] = el.checked;
+  if (el.checked) {
+    badge.textContent = 'Betaald';
+    badge.className = 'badge badge-betaald';
+  } else {
+    badge.textContent = 'Nog niet betaald';
+    badge.className = 'badge badge-open';
+  }
 }
 
 laad();
