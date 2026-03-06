@@ -141,6 +141,18 @@ function verwerk(tekst) {
     if (cols.length >= 8) orders.push(cols);
   }
 
+  // Sorteer op afhaaldag
+  var dagvolgorde = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'];
+  orders.sort(function(a, b) {
+    var dagA = (a[8] || '').split(' ')[0];
+    var dagB = (b[8] || '').split(' ')[0];
+    var iA = dagvolgorde.indexOf(dagA);
+    var iB = dagvolgorde.indexOf(dagB);
+    if (iA < 0) iA = 99;
+    if (iB < 0) iB = 99;
+    return iA - iB;
+  });
+
   document.getElementById('info').textContent = orders.length + ' bestellingen geladen';
 
   var totaal = 0, tikkieAantal = 0, contantAantal = 0, donaties = 0;
