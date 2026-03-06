@@ -565,7 +565,7 @@
       🎉 Bedankt voor je bestelling! Je bestelling is geregistreerd. We nemen zo snel mogelijk contact met je op om alles te bevestigen. Jij helpt mee aan de strijd tegen kanker! 💙
     </div>
     <div id="error-msg" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:12px;padding:20px;text-align:center;color:#c62828;font-weight:500;margin-top:16px;font-size:0.95rem;">
-      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via hencopullen2@hotmail.com.
+      ❌ Er ging iets mis bij het opslaan van je bestelling. Probeer het opnieuw of neem contact op via <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd5d8d3ded2cdc8d1d1d8d38ffdd5d2c9d0dcd4d193ded2d0">[email&#160;protected]</a>.
     </div>
 
   </div>
@@ -578,7 +578,7 @@
   <a href="https://inschrijving.opgevenisgeenoptie.nl/fundraisers/deltionteam7" target="_blank">Doneer rechtstreeks via de inzamelingsactie →</a></p>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const prices = { kruid: 7.5, cup: 6.0 };
   const qty = { kruid: 0, cup: 0 };
 
@@ -651,7 +651,8 @@
       if (res.ok) {
         const data = await res.json();
         sha = data.sha;
-        existing = atob(data.content.replace(/\n/g, ''));
+        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g, '')), c => c.charCodeAt(0));
+        existing = new TextDecoder('utf-8').decode(bytes);
       }
     } catch(e) {}
 
@@ -747,14 +748,3 @@
       await logToGitHub(row);
       document.getElementById('success').style.display = 'block';
       document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      btn.style.display = 'none';
-    } catch(e) {
-      document.getElementById('error-msg').style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = '✉️  Bestelling plaatsen';
-    }
-  }
-</script>
-
-</body>
-</html>
