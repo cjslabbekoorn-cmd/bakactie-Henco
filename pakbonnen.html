@@ -4,79 +4,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pakbonnen – Bakactie Alpe d'HuZes</title>
+  <title>Pakbonnen – Bakactie</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --blue:#1a4f8a; --orange:#f07d00; --green:#1a6e3c; --light:#f5f7fb; --border:#dde4f0; }
+    :root{--blue:#1a4f8a;--orange:#f07d00;--green:#1a6e3c;--light:#f5f7fb;--border:#dde4f0}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:var(--light);color:#222}
 
 ```
-.toolbar{background:var(--blue);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-.toolbar h1{font-family:'DM Serif Display',serif;color:#fff;font-size:1.2rem;font-weight:400}
-.toolbar p{color:#aac4e8;font-size:0.8rem;margin-top:2px}
-.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;transition:opacity .15s}
-.btn:hover{opacity:.85}
-.btn-reload{background:rgba(255,255,255,.15);color:#fff}
+.toolbar{background:var(--blue);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.toolbar h1{font-family:'DM Serif Display',serif;color:#fff;font-size:1.1rem;font-weight:400}
+.toolbar small{display:block;color:#aac4e8;font-size:0.72rem;margin-top:2px}
+.btn-reload{background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit}
 
-.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:12px 32px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.filter-bar label{font-size:0.8rem;font-weight:600;color:#888}
-.filter-bar select,.filter-bar input{padding:6px 10px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.82rem;background:#fafbfd}
+.filters{background:#fff;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters label{font-size:0.75rem;font-weight:700;color:#999}
+.filters select,.filters input{padding:5px 9px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:0.8rem;background:#fafbfd}
 
-.stats-bar{padding:16px 32px;display:flex;gap:16px;flex-wrap:wrap}
-.stat{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 20px;min-width:130px}
-.stat-label{font-size:0.7rem;font-weight:700;color:#aaa;letter-spacing:.5px;text-transform:uppercase}
-.stat-value{font-size:1.5rem;font-weight:700;color:var(--blue);margin-top:2px}
-.stat-value.orange{color:var(--orange)}
-.stat-value.green{color:var(--green)}
+.stats{padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 16px;min-width:110px}
+.stat-l{font-size:0.65rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.4px}
+.stat-v{font-size:1.3rem;font-weight:700;color:var(--blue);margin-top:2px}
+.stat-v.or{color:var(--orange)} .stat-v.gr{color:var(--green)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px;padding:0 32px 40px}
-#loading,#error-msg{text-align:center;padding:60px 32px;color:#888}
-#error-msg{color:#c0392b}
+#status{padding:40px 20px;text-align:center;color:#888;font-size:0.9rem}
+#status.error{color:#c0392b}
 
-.pakbon{background:#fff;border-radius:14px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:opacity .3s,filter .3s}
-.pakbon.afgehandeld{opacity:.4;filter:grayscale(1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;padding:0 20px 40px}
 
-.pakbon-header{background:var(--blue);padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.pakbon-header .naam{font-family:'DM Serif Display',serif;color:#fff;font-size:1.2rem;font-weight:400}
-.pakbon-header .tijdstip{color:#aac4e8;font-size:0.75rem;margin-top:3px}
+.card{background:#fff;border-radius:12px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:opacity .3s,filter .3s}
+.card.done{opacity:.35;filter:grayscale(1)}
 
-.badge{padding:5px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;white-space:nowrap;flex-shrink:0}
-.badge-tikkie-open{background:#fff3e0;color:var(--orange)}
-.badge-tikkie-paid{background:#e8f5e9;color:var(--green)}
-.badge-contant{background:#e8f5e9;color:var(--green)}
+.card-head{background:var(--blue);padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-head .naam{font-family:'DM Serif Display',serif;color:#fff;font-size:1.1rem;font-weight:400}
+.card-head .ts{color:#aac4e8;font-size:0.72rem;margin-top:2px}
 
-.pakbon-body{padding:16px 20px}
-.product-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f4fa}
-.product-row:last-child{border-bottom:none}
-.product-qty{background:var(--blue);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0}
-.product-naam{font-weight:600;font-size:0.9rem;flex:1}
-.product-prijs{font-weight:700;color:var(--orange);font-size:0.9rem}
-.smaak-tag{display:inline-block;background:#eef2f8;color:#555;border-radius:5px;padding:2px 7px;font-size:0.7rem;margin:3px 2px 0 0}
+.badge{padding:4px 10px;border-radius:16px;font-size:0.7rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.b-tikkie-open{background:#fff3e0;color:var(--orange)}
+.b-tikkie-paid{background:#e8f5e9;color:var(--green)}
+.b-contant{background:#e8f5e9;color:var(--green)}
 
-.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;background:var(--light);border-radius:10px;padding:12px}
-.meta-label{font-size:0.67rem;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.4px}
-.meta-value{font-size:0.85rem;color:#333;margin-top:1px;font-weight:500}
+.card-body{padding:14px 16px}
+.prow{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #f0f4fa}
+.prow:last-child{border-bottom:none}
+.pqty{background:var(--blue);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0}
+.pnm{font-weight:600;font-size:0.85rem;flex:1}
+.ppr{font-weight:700;color:var(--orange);font-size:0.85rem}
+.stag{display:inline-block;background:#eef2f8;color:#555;border-radius:4px;padding:2px 6px;font-size:0.68rem;margin:2px 2px 0 0}
 
-.pakbon-footer{border-top:2px dashed var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;background:#fafbfd}
-.totaal-label{font-size:0.72rem;font-weight:700;color:#aaa;text-transform:uppercase}
-.totaal-bedrag{font-size:1.4rem;font-weight:700;color:var(--blue)}
-.donatie-badge{background:#e8f0fb;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:0.75rem;font-weight:600}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;background:var(--light);border-radius:8px;padding:10px 12px}
+.ml{font-size:0.62rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.3px}
+.mv{font-size:0.82rem;font-weight:500;margin-top:1px}
 
-.pakbon-actions{border-top:1px solid var(--border)}
-.action-row{display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid #f0f4fa}
-.action-row:last-child{border-bottom:none}
-.action-row label{font-size:0.82rem;font-weight:600;color:#555;cursor:pointer;flex:1}
-.action-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.card-foot{border-top:2px dashed var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;background:#fafbfd}
+.tl{font-size:0.65rem;font-weight:700;color:#bbb;text-transform:uppercase}
+.tb{font-size:1.3rem;font-weight:700;color:var(--blue)}
+.don-b{background:#e8f0fb;color:var(--blue);border-radius:6px;padding:3px 9px;font-size:0.72rem;font-weight:600}
 
-.switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0}
+.card-actions{border-top:1px solid var(--border)}
+.arow{display:flex;align-items:center;gap:9px;padding:9px 16px;border-bottom:1px solid #f0f4fa}
+.arow:last-child{border-bottom:none}
+.arow label{font-size:0.78rem;font-weight:600;color:#555;cursor:pointer;flex:1}
+.arow input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+
+.switch{position:relative;display:inline-block;width:38px;height:21px;flex-shrink:0}
 .switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;cursor:pointer;inset:0;background:#ddd;border-radius:22px;transition:.3s}
-.slider:before{content:"";position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
-input:checked+.slider{background:var(--green)}
-input:checked+.slider:before{transform:translateX(18px)}
+.sl{position:absolute;cursor:pointer;inset:0;background:#ddd;border-radius:21px;transition:.25s}
+.sl:before{content:"";position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
+input:checked+.sl{background:var(--green)}
+input:checked+.sl:before{transform:translateX(17px)}
 
-.btn-print{margin-left:auto;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-print{margin-left:auto;background:var(--blue);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit}
 .btn-print:hover{opacity:.85}
 ```
 
@@ -87,345 +85,278 @@ input:checked+.slider:before{transform:translateX(18px)}
 <div class="toolbar">
   <div>
     <h1>📦 Pakbonnen – Bakactie Alpe d'HuZes</h1>
-    <p id="last-updated">Laden...</p>
+    <small id="ts">Laden...</small>
   </div>
-  <div>
-    <button class="btn btn-reload" onclick="loadCSV()">↺ Vernieuwen</button>
-  </div>
+  <button class="btn-reload" onclick="laad()">↺ Vernieuwen</button>
 </div>
 
-<div class="filter-bar">
+<div class="filters">
   <label>Dag:</label>
-  <select id="filter-dag" onchange="renderPakbonnen()"><option value="">Alle dagen</option></select>
+  <select id="fdag" onchange="render()"><option value="">Alle dagen</option></select>
   <label>Betaling:</label>
-  <select id="filter-betaling" onchange="renderPakbonnen()">
+  <select id="fbet" onchange="render()">
     <option value="">Alles</option>
     <option value="tikkie">Tikkie</option>
     <option value="contant">Contant</option>
   </select>
   <label>Zoek:</label>
-  <input type="text" id="filter-zoek" placeholder="Naam of email..." oninput="renderPakbonnen()" style="width:200px">
+  <input id="fzoek" placeholder="Naam of email..." oninput="render()" style="width:180px">
 </div>
 
-<div class="stats-bar" id="stats-bar"></div>
-<div id="loading">⏳ Bestellingen laden...</div>
-<div id="error-msg" style="display:none"></div>
-<div class="grid" id="grid" style="display:none"></div>
+<div class="stats" id="stats"></div>
+<div id="status">⏳ Bestellingen laden...</div>
+<div class="grid" id="grid"></div>
 
 <script>
-let orders = [];
+var orders = [];
+var tstate = {}; // tikkie betaald per index
+var astate = {}; // afgehandeld per index
 
-// Persistente state per originele index
-// state[i] = { tikkie: bool, afgehandeld: bool }
-const state = {};
+function laad() {
+  document.getElementById('status').textContent = '⏳ Bestellingen laden...';
+  document.getElementById('status').className = '';
+  document.getElementById('status').style.display = 'block';
+  document.getElementById('grid').innerHTML = '';
+  document.getElementById('stats').innerHTML = '';
 
-function getState(i) {
-  if (!state[i]) state[i] = { tikkie: false, afgehandeld: false };
-  return state[i];
+  var url = 'https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?nc=' + Date.now();
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.timeout = 15000;
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        orders = parseCSV(xhr.responseText);
+        document.getElementById('ts').textContent = 'Bijgewerkt: ' + new Date().toLocaleString('nl-NL');
+        document.getElementById('status').style.display = 'none';
+        vulDagen();
+        render();
+      } catch(e) {
+        fout('Parse fout: ' + e.message);
+      }
+    } else {
+      fout('HTTP fout: ' + xhr.status);
+    }
+  };
+  xhr.onerror = function() { fout('Netwerkfout – controleer verbinding'); };
+  xhr.ontimeout = function() { fout('Timeout – probeer opnieuw'); };
+  xhr.send();
 }
 
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const result = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
+function fout(msg) {
+  var el = document.getElementById('status');
+  el.innerHTML = '❌ ' + msg + '<br><br><button onclick="laad()" style="margin-top:10px;padding:9px 18px;background:#1a4f8a;color:#fff;border:none;border-radius:7px;font-family:inherit;font-size:0.85rem;cursor:pointer">↺ Opnieuw</button>';
+  el.className = 'error';
+  el.style.display = 'block';
+}
+
+function parseCSV(txt) {
+  var lines = txt.trim().split('\n');
+  var res = [];
+  for (var i = 1; i < lines.length; i++) {
+    var line = lines[i].trim();
     if (!line) continue;
-    const cols = [];
-    let inQ = false, cur = '';
-    for (let c = 0; c < line.length; c++) {
-      const ch = line[c];
+    var cols = [], inQ = false, cur = '';
+    for (var c = 0; c < line.length; c++) {
+      var ch = line[c];
       if (ch === '"') { inQ = !inQ; }
       else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
       else { cur += ch; }
     }
     cols.push(cur.trim());
-    if (cols.length >= 8) result.push(cols);
+    if (cols.length >= 8) res.push(cols);
   }
-  return result;
+  return res;
 }
 
-async function loadCSV() {
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('grid').style.display = 'none';
-  document.getElementById('error-msg').style.display = 'none';
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-    let res;
-    try {
-      res = await fetch('https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now(), { signal: controller.signal });
-    } finally {
-      clearTimeout(timeout);
-    }
-    if (!res.ok) throw new Error('HTTP ' + res.status + ' – kon CSV niet laden');
-    const text = await res.text();
-    orders = parseCSV(text);
-    document.getElementById('last-updated').textContent = 'Bijgewerkt: ' + new Date().toLocaleString('nl-NL');
-    const dagen = [...new Set(orders.map(o => o[8] || '').filter(Boolean))];
-    const dagSel = document.getElementById('filter-dag');
-    dagSel.innerHTML = '<option value="">Alle dagen</option>';
-    dagen.forEach(d => { const opt = document.createElement('option'); opt.value = d; opt.textContent = d; dagSel.appendChild(opt); });
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('grid').style.display = 'grid';
-    renderPakbonnen();
-  } catch(e) {
-    document.getElementById('loading').style.display = 'none';
-    const errEl = document.getElementById('error-msg');
-    errEl.style.display = 'block';
-    const msg = e.name === 'AbortError' ? 'Timeout – geen verbinding met GitHub. Controleer je internet en probeer opnieuw.' : e.message;
-    errEl.innerHTML = '❌ ' + msg + '<br><br><button onclick="loadCSV()" style="margin-top:12px;padding:10px 20px;background:#1a4f8a;color:#fff;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer">↺ Opnieuw proberen</button>';
-  }
+function vulDagen() {
+  var sel = document.getElementById('fdag');
+  var dagen = [];
+  orders.forEach(function(o) { if (o[8] && dagen.indexOf(o[8]) < 0) dagen.push(o[8]); });
+  sel.innerHTML = '<option value="">Alle dagen</option>';
+  dagen.forEach(function(d) { sel.innerHTML += '<option value="' + d + '">' + d + '</option>'; });
 }
 
-function renderPakbonnen() {
-  const dag = document.getElementById('filter-dag').value;
-  const betaling = document.getElementById('filter-betaling').value;
-  const zoek = document.getElementById('filter-zoek').value.toLowerCase();
+function render() {
+  var dag = document.getElementById('fdag').value;
+  var bet = document.getElementById('fbet').value;
+  var zoek = document.getElementById('fzoek').value.toLowerCase();
 
-  const filtered = orders.filter((o, i) => {
+  var filtered = orders.filter(function(o, i) {
     if (dag && o[8] !== dag) return false;
-    const isTikkie = (o[10] || '').toLowerCase().includes('tikkie');
-    if (betaling === 'tikkie' && !isTikkie) return false;
-    if (betaling === 'contant' && isTikkie) return false;
-    if (zoek && !(o[1]||'').toLowerCase().includes(zoek) && !(o[2]||'').toLowerCase().includes(zoek)) return false;
+    var isTik = (o[10]||'').toLowerCase().indexOf('tikkie') >= 0;
+    if (bet === 'tikkie' && !isTik) return false;
+    if (bet === 'contant' && isTik) return false;
+    if (zoek && (o[1]||'').toLowerCase().indexOf(zoek) < 0 && (o[2]||'').toLowerCase().indexOf(zoek) < 0) return false;
     return true;
   });
 
-  // Stats
-  const totaal = filtered.reduce((s, o) => s + (parseFloat(o[7]) || 0), 0);
-  const tikkieCount = filtered.filter(o => (o[10]||'').toLowerCase().includes('tikkie')).length;
-  const contantCount = filtered.length - tikkieCount;
-  const donaties = filtered.reduce((s, o) => s + (parseFloat(o[12]) || 0), 0);
-  document.getElementById('stats-bar').innerHTML = `
-    <div class="stat"><div class="stat-label">Bestellingen</div><div class="stat-value">${filtered.length}</div></div>
-    <div class="stat"><div class="stat-label">Totaal omzet</div><div class="stat-value orange">€ ${totaal.toFixed(2).replace('.',',')}</div></div>
-    <div class="stat"><div class="stat-label">Tikkie betaald</div><div class="stat-value">${tikkieCount}</div></div>
-    <div class="stat"><div class="stat-label">Contant</div><div class="stat-value orange">${contantCount}</div></div>
-    ${donaties > 0 ? `<div class="stat"><div class="stat-label">💙 Donaties</div><div class="stat-value green">€ ${donaties.toFixed(2).replace('.',',')}</div></div>` : ''}
-  `;
+  var totaal = 0, tik = 0, con = 0, don = 0;
+  filtered.forEach(function(o) {
+    totaal += parseFloat(o[7]) || 0;
+    don += parseFloat(o[12]) || 0;
+    if ((o[10]||'').toLowerCase().indexOf('tikkie') >= 0) tik++; else con++;
+  });
 
-  const grid = document.getElementById('grid');
-  if (filtered.length === 0) {
-    grid.innerHTML = '<p style="color:#aaa;padding:40px;grid-column:1/-1;text-align:center">Geen bestellingen gevonden.</p>';
-    return;
-  }
+  document.getElementById('stats').innerHTML =
+    stat('Bestellingen', filtered.length, '') +
+    stat('Totaal omzet', '€ ' + totaal.toFixed(2).replace('.',','), 'or') +
+    stat('Tikkie', tik, '') +
+    stat('Contant', con, 'or') +
+    (don > 0 ? stat('💙 Donaties', '€ ' + don.toFixed(2).replace('.',','), 'gr') : '');
 
-  grid.innerHTML = filtered.map(o => {
-    const i = orders.indexOf(o);
-    return pakbonKaart(o, i);
-  }).join('');
+  var html = '';
+  filtered.forEach(function(o) {
+    var i = orders.indexOf(o);
+    html += kaart(o, i);
+  });
+  document.getElementById('grid').innerHTML = html || '<p style="color:#bbb;padding:40px;grid-column:1/-1;text-align:center">Geen bestellingen gevonden.</p>';
 
-  // Herstel state vanuit JS-object
-  filtered.forEach(o => {
-    const i = orders.indexOf(o);
-    const s = state[i];
-    if (!s) return;
-    if (s.tikkie) {
-      const el = document.getElementById('tikkie-' + i);
-      if (el) el.checked = true;
-      updateTikkieBadge(i, true);
+  // Herstel state
+  filtered.forEach(function(o) {
+    var i = orders.indexOf(o);
+    if (tstate[i]) {
+      var el = document.getElementById('tik-' + i);
+      if (el) { el.checked = true; setBadge(i, true); }
     }
-    if (s.afgehandeld) {
-      const el = document.getElementById('check-' + i);
-      if (el) el.checked = true;
-      document.getElementById('pakbon-' + i)?.classList.add('afgehandeld');
+    if (astate[i]) {
+      var el2 = document.getElementById('chk-' + i);
+      if (el2) { el2.checked = true; document.getElementById('card-' + i).classList.add('done'); }
     }
   });
 }
 
-function pakbonKaart(o, i) {
-  const [tijdstip, naam, email, tel, kruid, cup, smaken, totaal, dag, dagdeel, betaling, opmerkingen, donatie] = o;
-  const isTikkie = (betaling || '').toLowerCase().includes('tikkie');
-
-  let producten = '';
-  if (parseInt(kruid) > 0) {
-    producten += `<div class="product-row">
-      <div class="product-qty">${kruid}</div>
-      <div class="product-naam">🥮 Kruidkoek</div>
-      <div class="product-prijs">€ ${(parseInt(kruid)*7.5).toFixed(2).replace('.',',')}</div>
-    </div>`;
-  }
-  if (parseInt(cup) > 0) {
-    const tags = (smaken||'').split('|').map(s=>s.trim()).filter(Boolean).map(s=>`<span class="smaak-tag">${s}</span>`).join('');
-    producten += `<div class="product-row">
-      <div class="product-qty">${cup}</div>
-      <div class="product-naam">🧁 Cupcakes<br><span style="font-weight:400;font-size:0.75rem;color:#888">${tags}</span></div>
-      <div class="product-prijs">€ ${(parseInt(cup)*6).toFixed(2).replace('.',',')}</div>
-    </div>`;
-  }
-  if (parseFloat(donatie) > 0) {
-    producten += `<div class="product-row">
-      <div class="product-qty" style="background:#1a6e3c">1</div>
-      <div class="product-naam">💙 Extra donatie <span style="font-weight:400;font-size:0.75rem;color:#1a6e3c">Alpe d'HuZes</span></div>
-      <div class="product-prijs" style="color:#1a6e3c">€ ${parseFloat(donatie).toFixed(2).replace('.',',')}</div>
-    </div>`;
-  }
-
-  const opmHTML = opmerkingen ? `<div style="grid-column:1/-1"><div class="meta-label">💬 Opmerkingen</div><div class="meta-value" style="color:#e67e00">${opmerkingen}</div></div>` : '';
-  const donatieHTML = parseFloat(donatie) > 0 ? `<span class="donatie-badge">💙 € ${parseFloat(donatie).toFixed(2).replace('.',',')}</span>` : '';
-
-  const tikkieRow = isTikkie ? `
-    <div class="action-row">
-      <label class="switch">
-        <input type="checkbox" id="tikkie-${i}" onchange="onTikkieChange(${i})">
-        <span class="slider"></span>
-      </label>
-      <label for="tikkie-${i}">📱 Tikkie ontvangen / betaald</label>
-    </div>` : '';
-
-  return `<div class="pakbon" id="pakbon-${i}">
-    <div class="pakbon-header">
-      <div>
-        <div class="naam">${naam}</div>
-        <div class="tijdstip">${tijdstip}</div>
-      </div>
-      <span class="badge ${isTikkie ? 'badge-tikkie-open' : 'badge-contant'}" id="badge-${i}">
-        ${isTikkie ? '📱 Tikkie – nog niet betaald' : '💵 Contant – nog betalen'}
-      </span>
-    </div>
-    <div class="pakbon-body">
-      <div>${producten}</div>
-      <div class="meta-grid">
-        <div><div class="meta-label">📅 Afhaaldag</div><div class="meta-value">${dag}</div></div>
-        <div><div class="meta-label">⏰ Dagdeel</div><div class="meta-value">${dagdeel}</div></div>
-        <div><div class="meta-label">📧 Email</div><div class="meta-value" style="font-size:0.78rem">${email}</div></div>
-        <div><div class="meta-label">📱 Telefoon</div><div class="meta-value">${tel||'–'}</div></div>
-        ${opmHTML}
-      </div>
-    </div>
-    <div class="pakbon-footer">
-      <div>
-        <div class="totaal-label">Totaalbedrag</div>
-        <div class="totaal-bedrag">€ ${(parseFloat(totaal)||0).toFixed(2).replace('.',',')}</div>
-      </div>
-      ${donatieHTML}
-    </div>
-    <div class="pakbon-actions">
-      ${tikkieRow}
-      <div class="action-row">
-        <input type="checkbox" id="check-${i}" onchange="onAfgehandeldChange(${i})">
-        <label for="check-${i}">✅ Bestelling afgehandeld / uitgeleverd</label>
-        <button class="btn-print" onclick="printPakbon(${i})">🖨️ Afdrukken</button>
-      </div>
-    </div>
-  </div>`;
+function stat(l, v, cls) {
+  return '<div class="stat"><div class="stat-l">' + l + '</div><div class="stat-v ' + cls + '">' + v + '</div></div>';
 }
 
-function updateTikkieBadge(i, betaald) {
-  const badge = document.getElementById('badge-' + i);
-  if (!badge) return;
-  if (betaald) {
-    badge.textContent = '📱 Tikkie – betaald ✓';
-    badge.className = 'badge badge-tikkie-paid';
-  } else {
-    badge.textContent = '📱 Tikkie – nog niet betaald';
-    badge.className = 'badge badge-tikkie-open';
+function kaart(o, i) {
+  var naam=o[1], ts=o[0], email=o[2], tel=o[3], kruid=parseInt(o[4])||0, cup=parseInt(o[5])||0;
+  var smaken=o[6]||'', totaal=parseFloat(o[7])||0, dag=o[8]||'', dagdeel=o[9]||'';
+  var betaling=o[10]||'', opm=o[11]||'', donatie=parseFloat(o[12])||0;
+  var isTik = betaling.toLowerCase().indexOf('tikkie') >= 0;
+
+  var prod = '';
+  if (kruid > 0) prod += prow(kruid, '🥮 Kruidkoek', '', (kruid*7.5).toFixed(2).replace('.',','));
+  if (cup > 0) {
+    var tags = smaken.split('|').map(function(s){return s.trim();}).filter(Boolean).map(function(s){return '<span class="stag">'+s+'</span>';}).join('');
+    prod += prow(cup, '🧁 Cupcakes', tags, (cup*6).toFixed(2).replace('.',','));
   }
+  if (donatie > 0) prod += '<div class="prow"><div class="pqty" style="background:#1a6e3c">1</div><div class="pnm">💙 Extra donatie <span style="font-weight:400;font-size:0.72rem;color:#1a6e3c">Alpe d\'HuZes</span></div><div class="ppr" style="color:#1a6e3c">€ ' + donatie.toFixed(2).replace('.',',') + '</div></div>';
+
+  var opmHTML = opm ? '<div style="grid-column:1/-1"><div class="ml">💬 Opmerkingen</div><div class="mv" style="color:#e67e00">' + opm + '</div></div>' : '';
+  var donHTML = donatie > 0 ? '<span class="don-b">💙 € ' + donatie.toFixed(2).replace('.',',') + '</span>' : '';
+  var tikRow = isTik ? '<div class="arow"><label class="switch"><input type="checkbox" id="tik-'+i+'" onchange="onTik('+i+')"><span class="sl"></span></label><label for="tik-'+i+'">📱 Tikkie ontvangen / betaald</label></div>' : '';
+
+  return '<div class="card" id="card-'+i+'">'
+    + '<div class="card-head"><div><div class="naam">'+naam+'</div><div class="ts">'+ts+'</div></div>'
+    + '<span class="badge ' + (isTik ? 'b-tikkie-open' : 'b-contant') + '" id="badge-'+i+'">' + (isTik ? '📱 Tikkie – nog niet betaald' : '💵 Contant – nog betalen') + '</span>'
+    + '</div>'
+    + '<div class="card-body"><div>' + prod + '</div>'
+    + '<div class="meta"><div><div class="ml">📅 Afhaaldag</div><div class="mv">'+dag+'</div></div><div><div class="ml">⏰ Dagdeel</div><div class="mv">'+dagdeel+'</div></div><div><div class="ml">📧 Email</div><div class="mv" style="font-size:0.72rem">'+email+'</div></div><div><div class="ml">📱 Telefoon</div><div class="mv">'+(tel||'–')+'</div></div>'+opmHTML+'</div>'
+    + '</div>'
+    + '<div class="card-foot"><div><div class="tl">Totaalbedrag</div><div class="tb">€ '+totaal.toFixed(2).replace('.',',')+'</div></div>'+donHTML+'</div>'
+    + '<div class="card-actions">'+tikRow
+    + '<div class="arow"><input type="checkbox" id="chk-'+i+'" onchange="onChk('+i+')"><label for="chk-'+i+'">✅ Bestelling afgehandeld / uitgeleverd</label><button class="btn-print" onclick="druk('+i+')">🖨️ Afdrukken</button></div>'
+    + '</div></div>';
 }
 
-function onTikkieChange(i) {
-  const checked = document.getElementById('tikkie-' + i).checked;
-  getState(i).tikkie = checked;  // Sla op in state
-  updateTikkieBadge(i, checked);
+function prow(qty, nm, tags, prijs) {
+  return '<div class="prow"><div class="pqty">'+qty+'</div><div class="pnm">'+nm+(tags?'<br><span style="font-weight:400;font-size:0.7rem;color:#888">'+tags+'</span>':'')+'</div><div class="ppr">€ '+prijs+'</div></div>';
 }
 
-function onAfgehandeldChange(i) {
-  const checked = document.getElementById('check-' + i).checked;
-  getState(i).afgehandeld = checked;  // Sla op in state
-  document.getElementById('pakbon-' + i)?.classList.toggle('afgehandeld', checked);
+function setBadge(i, betaald) {
+  var b = document.getElementById('badge-'+i);
+  if (!b) return;
+  b.textContent = betaald ? '📱 Tikkie – betaald ✓' : '📱 Tikkie – nog niet betaald';
+  b.className = 'badge ' + (betaald ? 'b-tikkie-paid' : 'b-tikkie-open');
 }
 
-function printPakbon(i) {
-  const o = orders[i];
-  const [tijdstip, naam, email, tel, kruid, cup, smaken, totaal, dag, dagdeel, betaling, opmerkingen, donatie] = o;
-  const isTikkie = (betaling||'').toLowerCase().includes('tikkie');
-  const tikkieBetaald = isTikkie && getState(i).tikkie;
+function onTik(i) {
+  var checked = document.getElementById('tik-'+i).checked;
+  tstate[i] = checked;
+  setBadge(i, checked);
+}
 
-  const badgeText = isTikkie
-    ? (tikkieBetaald ? '📱 Tikkie – betaald ✓' : '📱 Tikkie – nog niet betaald')
-    : '💵 Contant – betalen op locatie';
-  const badgeStyle = isTikkie
-    ? (tikkieBetaald ? 'background:#e8f5e9;color:#1a6e3c' : 'background:#fff3e0;color:#f07d00')
-    : 'background:#e8f5e9;color:#1a6e3c';
+function onChk(i) {
+  var checked = document.getElementById('chk-'+i).checked;
+  astate[i] = checked;
+  document.getElementById('card-'+i).classList.toggle('done', checked);
+}
 
-  let producten = '';
-  if (parseInt(kruid) > 0) producten += `<div class="pr"><div class="pq">${kruid}</div><div class="pn">🥮 Kruidkoek</div><div class="pp">€ ${(parseInt(kruid)*7.5).toFixed(2).replace('.',',')}</div></div>`;
-  if (parseInt(cup) > 0) {
-    const tags = (smaken||'').split('|').map(s=>s.trim()).filter(Boolean).map(s=>`<span class="st">${s}</span>`).join('');
-    producten += `<div class="pr"><div class="pq">${cup}</div><div class="pn">🧁 Cupcakes<br><span style="font-weight:400;font-size:0.8rem;color:#888">${tags}</span></div><div class="pp">€ ${(parseInt(cup)*6).toFixed(2).replace('.',',')}</div></div>`;
+function druk(i) {
+  var o = orders[i];
+  var naam=o[1], ts=o[0], email=o[2], tel=o[3], kruid=parseInt(o[4])||0, cup=parseInt(o[5])||0;
+  var smaken=o[6]||'', totaal=parseFloat(o[7])||0, dag=o[8]||'', dagdeel=o[9]||'';
+  var betaling=o[10]||'', opm=o[11]||'', donatie=parseFloat(o[12])||0;
+  var isTik = betaling.toLowerCase().indexOf('tikkie') >= 0;
+  var betaald = isTik && tstate[i];
+
+  var badgeTxt = isTik ? (betaald ? '📱 Tikkie – betaald ✓' : '📱 Tikkie – nog niet betaald') : '💵 Contant – betalen op locatie';
+  var badgeStl = isTik ? (betaald ? 'background:#e8f5e9;color:#1a6e3c' : 'background:#fff3e0;color:#f07d00') : 'background:#e8f5e9;color:#1a6e3c';
+
+  var prod = '';
+  if (kruid > 0) prod += '<div class="pr"><div class="pq">'+kruid+'</div><div class="pn">🥮 Kruidkoek</div><div class="pp">€ '+(kruid*7.5).toFixed(2).replace('.',',')+'</div></div>';
+  if (cup > 0) {
+    var tags = smaken.split('|').map(function(s){return s.trim();}).filter(Boolean).map(function(s){return '<span class="st">'+s+'</span>';}).join('');
+    prod += '<div class="pr"><div class="pq">'+cup+'</div><div class="pn">🧁 Cupcakes'+(tags?'<br><small style="font-weight:400;color:#888">'+tags+'</small>':'')+'</div><div class="pp">€ '+(cup*6).toFixed(2).replace('.',',')+'</div></div>';
   }
-  if (parseFloat(donatie) > 0) producten += `<div class="pr"><div class="pq" style="background:#1a6e3c">1</div><div class="pn">💙 Extra donatie <span style="font-weight:400;font-size:0.8rem;color:#1a6e3c">Alpe d'HuZes</span></div><div class="pp" style="color:#1a6e3c">€ ${parseFloat(donatie).toFixed(2).replace('.',',')}</div></div>`;
+  if (donatie > 0) prod += '<div class="pr"><div class="pq" style="background:#1a6e3c">1</div><div class="pn">💙 Extra donatie</div><div class="pp" style="color:#1a6e3c">€ '+donatie.toFixed(2).replace('.',',')+'</div></div>';
 
-  const opmHTML = opmerkingen ? `<div style="grid-column:1/-1"><div class="ml">💬 Opmerkingen</div><div class="mv" style="color:#e67e00;font-weight:600">${opmerkingen}</div></div>` : '';
-  const donatieHTML = parseFloat(donatie) > 0 ? `<span style="background:#e8f0fb;color:#1a4f8a;border-radius:8px;padding:6px 14px;font-size:0.85rem;font-weight:600">💙 Donatie € ${parseFloat(donatie).toFixed(2).replace('.',',')}</span>` : '';
+  var opmHTML = opm ? '<div style="grid-column:1/-1"><div class="ml">💬 Opmerkingen</div><div class="mv" style="color:#e67e00;font-weight:600">'+opm+'</div></div>' : '';
+  var donHTML = donatie > 0 ? '<div style="background:#e8f0fb;color:#1a4f8a;border-radius:7px;padding:6px 14px;font-size:0.82rem;font-weight:600">💙 Donatie € '+donatie.toFixed(2).replace('.',',')+'</div>' : '';
 
-  const html = `<!DOCTYPE html><html lang="nl"><head>
-  <meta charset="UTF-8">
-  <title>Pakbon – ${naam}</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{width:210mm;height:297mm;overflow:hidden}
-    body{font-family:'DM Sans',sans-serif;background:#fff;display:flex;flex-direction:column}
-    @page{size:A4 portrait;margin:0}
-    .header{background:#1a4f8a;padding:16mm 16mm 12mm;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-shrink:0}
-    .org{color:#aac4e8;font-size:0.75rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-    .naam{font-family:'DM Serif Display',serif;color:#fff;font-size:2.2rem;font-weight:400;line-height:1.1}
-    .ts{color:#aac4e8;font-size:0.82rem;margin-top:8px}
-    .badge{padding:7px 16px;border-radius:30px;font-size:0.82rem;font-weight:700;white-space:nowrap;align-self:flex-start;margin-top:4px}
-    .body{flex:1;padding:8mm 16mm;display:flex;flex-direction:column;gap:6mm;overflow:hidden}
-    .stitle{font-size:0.67rem;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-    .products{border:1.5px solid #dde4f0;border-radius:10px;overflow:hidden}
-    .pr{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid #f0f4fa}
-    .pr:last-child{border-bottom:none}
-    .pq{background:#1a4f8a;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:700;flex-shrink:0}
-    .pn{font-weight:600;font-size:0.95rem;flex:1}
-    .pp{font-weight:700;color:#f07d00;font-size:0.95rem}
-    .st{display:inline-block;background:#eef2f8;color:#555;border-radius:5px;padding:2px 8px;font-size:0.75rem;margin:3px 2px 0 0}
-    .meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f5f7fb;border-radius:10px;padding:12px 14px}
-    .ml{font-size:0.65rem;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.4px}
-    .mv{font-size:0.9rem;font-weight:500;margin-top:2px}
-    .footer{border-top:3px dashed #dde4f0;padding:10px 16mm 14mm;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-    .tl{font-size:0.7rem;font-weight:700;color:#aaa;text-transform:uppercase}
-    .tb{font-size:2.2rem;font-weight:700;color:#1a4f8a;line-height:1}
-    .branding{text-align:center;color:#ccc;font-size:0.65rem;padding:0 16mm 6mm;flex-shrink:0}
-  </style>
+  var w = window.open('','_blank','width=850,height=1200');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Pakbon '+naam+'</title>'
+  +'<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">'
+  +'<style>'
+  +'*{box-sizing:border-box;margin:0;padding:0}'
+  +'@page{size:A4 portrait;margin:0}'
+  +'html,body{width:210mm;height:297mm;overflow:hidden;background:#fff;font-family:"DM Sans",sans-serif}'
+  +'body{display:flex;flex-direction:column}'
+  +'.hd{background:#1a4f8a;padding:15mm 15mm 11mm;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-shrink:0}'
+  +'.org{color:#aac4e8;font-size:0.72rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}'
+  +'.nm{font-family:"DM Serif Display",serif;color:#fff;font-size:2rem;font-weight:400;line-height:1.15}'
+  +'.ts2{color:#aac4e8;font-size:0.8rem;margin-top:7px}'
+  +'.bdg{padding:7px 15px;border-radius:28px;font-size:0.8rem;font-weight:700;align-self:flex-start;margin-top:3px}'
+  +'.bd{flex:1;padding:7mm 15mm;display:flex;flex-direction:column;gap:5mm;overflow:hidden}'
+  +'.stl{font-size:0.62rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}'
+  +'.prods{border:1.5px solid #dde4f0;border-radius:9px;overflow:hidden}'
+  +'.pr{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f0f4fa}'
+  +'.pr:last-child{border-bottom:none}'
+  +'.pq{background:#1a4f8a;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;flex-shrink:0}'
+  +'.pn{font-weight:600;font-size:0.92rem;flex:1}'
+  +'.pp{font-weight:700;color:#f07d00;font-size:0.92rem}'
+  +'.st{display:inline-block;background:#eef2f8;color:#555;border-radius:4px;padding:2px 7px;font-size:0.7rem;margin:3px 2px 0 0}'
+  +'.meta{display:grid;grid-template-columns:1fr 1fr;gap:9px;background:#f5f7fb;border-radius:9px;padding:11px 14px}'
+  +'.ml{font-size:0.62rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.3px}'
+  +'.mv{font-size:0.88rem;font-weight:500;margin-top:2px}'
+  +'.ft{border-top:3px dashed #dde4f0;padding:9px 15mm 12mm;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}'
+  +'.tl{font-size:0.62rem;font-weight:700;color:#bbb;text-transform:uppercase}'
+  +'.tb{font-size:2rem;font-weight:700;color:#1a4f8a;line-height:1}'
+  +'.br{text-align:center;color:#ccc;font-size:0.6rem;padding:0 15mm 5mm;flex-shrink:0}'
+  +'</style></head><body>'
 
-</head><body>
-  <div class="header">
-    <div>
-      <div class="org">Bakactie Alpe d'HuZes 2026</div>
-      <div class="naam">${naam}</div>
-      <div class="ts">Besteld op ${tijdstip}</div>
-    </div>
-    <span class="badge" style="${badgeStyle}">${badgeText}</span>
-  </div>
-  <div class="body">
-    <div><div class="stitle">Bestelling</div><div class="products">${producten}</div></div>
-    <div><div class="stitle">Afhaalinformatie</div>
-      <div class="meta">
-        <div><div class="ml">📅 Afhaaldag</div><div class="mv">${dag}</div></div>
-        <div><div class="ml">⏰ Dagdeel</div><div class="mv">${dagdeel}</div></div>
-        <div><div class="ml">📧 Email</div><div class="mv" style="font-size:0.78rem">${email}</div></div>
-        <div><div class="ml">📱 Telefoon</div><div class="mv">${tel||'–'}</div></div>
-        ${opmHTML}
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <div><div class="tl">Totaalbedrag</div><div class="tb">€ ${(parseFloat(totaal)||0).toFixed(2).replace('.',',')}</div></div>
-    ${donatieHTML}
-  </div>
-  <div class="branding">Bakactie Alpe d'HuZes · Deltionteam7 · inschrijving.opgevenisgeenoptie.nl</div>
-  <script>window.onload=()=>{window.print();}<\/script>
-</body></html>`;
-
-const win = window.open(’’, ‘_blank’);
-win.document.write(html);
-win.document.close();
++’<div class="hd"><div><div class="org">Bakactie Alpe d'HuZes 2026</div><div class="nm">’+naam+’</div><div class="ts2">Besteld op ‘+ts+’</div></div>’
++’<span class="bdg" style="'+badgeStl+'">’+badgeTxt+’</span></div>’
++’<div class="bd">’
++’<div><div class="stl">Bestelling</div><div class="prods">’+prod+’</div></div>’
++’<div><div class="stl">Afhaalinformatie</div>’
++’<div class="meta">’
++’<div><div class="ml">📅 Afhaaldag</div><div class="mv">’+dag+’</div></div>’
++’<div><div class="ml">⏰ Dagdeel</div><div class="mv">’+dagdeel+’</div></div>’
++’<div><div class="ml">📧 Email</div><div class="mv" style="font-size:0.75rem">’+email+’</div></div>’
++’<div><div class="ml">📱 Telefoon</div><div class="mv">’+(tel||’–’)+’</div></div>’
++opmHTML+’</div></div>’
++’</div>’
++’<div class="ft"><div><div class="tl">Totaalbedrag</div><div class="tb">€ ‘+totaal.toFixed(2).replace(’.’,’,’)+’</div></div>’+donHTML+’</div>’
++’<div class="br">Bakactie Alpe d'HuZes · Deltionteam7 · inschrijving.opgevenisgeenoptie.nl</div>’
++’<script>window.onload=function(){window.print();}</script>’
++’</body></html>’);
+w.document.close();
 }
 
-loadCSV();
+laad();
 </script>
 
 </body>
