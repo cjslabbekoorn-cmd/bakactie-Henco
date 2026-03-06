@@ -636,7 +636,7 @@
     });
   });
 
-  async function logToGitHub(row) {
+  async function logToGitHub(row, orderTotal, orderDonation) {
     const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
     const headers = {
       'Authorization': `token ${GH_TOKEN}`,
@@ -674,6 +674,44 @@
     });
 
     if (!putRes.ok) throw new Error('GitHub write failed');
+
+    // 4. Update stats.json
+    await updateStats(orderTotal, orderDonation);
+  }
+
+  async function updateStats(orderTotal, orderDonation) {
+    const statsUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/stats.json`;
+    const headers = { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' };
+
+    let sha = null, count = 0, totaal = 0, donaties = 0;
+    try {
+      const res = await fetch(statsUrl, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        sha = data.sha;
+        const bytes = Uint8Array.from(atob(data.content.replace(/\n/g,'')), c => c.charCodeAt(0));
+        const stats = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+        count = stats.count || 0;
+        totaal = stats.totaal || 0;
+        donaties = stats.donaties || 0;
+      }
+    } catch(e) {}
+
+    const newStats = {
+      count: count + 1,
+      totaal: Math.round((totaal + orderTotal) * 100) / 100,
+      donaties: Math.round((donaties + (orderDonation || 0)) * 100) / 100
+    };
+
+    await fetch(statsUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: 'Stats update',
+        content: btoa(JSON.stringify(newStats)),
+        ...(sha ? { sha } : {})
+      })
+    });
   }
 
   async function submitOrder() {
@@ -746,7 +784,7 @@
     document.getElementById('error-msg').style.display = 'none';
 
     try {
-      await logToGitHub(row);
+      await logToGitHub(row, total, donation);
       document.getElementById('success').style.display = 'block';
       document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } catch(e) {
