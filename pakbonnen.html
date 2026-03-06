@@ -149,8 +149,15 @@ async function loadCSV() {
   document.getElementById('grid').style.display = 'none';
   document.getElementById('error-msg').style.display = 'none';
   try {
-    const res = await fetch('https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now());
-    if (!res.ok) throw new Error('Kon CSV niet laden');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    let res;
+    try {
+      res = await fetch('https://raw.githubusercontent.com/cjslabbekoorn-cmd/bakactie-Henco/main/bestellingen.csv?t=' + Date.now(), { signal: controller.signal });
+    } finally {
+      clearTimeout(timeout);
+    }
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' – kon CSV niet laden');
     const text = await res.text();
     orders = parseCSV(text);
     document.getElementById('last-updated').textContent = 'Bijgewerkt: ' + new Date().toLocaleString('nl-NL');
@@ -163,8 +170,10 @@ async function loadCSV() {
     renderPakbonnen();
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
-    document.getElementById('error-msg').style.display = 'block';
-    document.getElementById('error-msg').textContent = '❌ ' + e.message;
+    const errEl = document.getElementById('error-msg');
+    errEl.style.display = 'block';
+    const msg = e.name === 'AbortError' ? 'Timeout – geen verbinding met GitHub. Controleer je internet en probeer opnieuw.' : e.message;
+    errEl.innerHTML = '❌ ' + msg + '<br><br><button onclick="loadCSV()" style="margin-top:12px;padding:10px 20px;background:#1a4f8a;color:#fff;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer">↺ Opnieuw proberen</button>';
   }
 }
 
