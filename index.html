@@ -748,3 +748,17 @@
       await logToGitHub(row);
       document.getElementById('success').style.display = 'block';
       document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch(e) {
+      document.getElementById('error-msg').style.display = 'block';
+      document.getElementById('error-msg').innerHTML = `
+        <strong>Er ging iets mis bij het opslaan.</strong><br>
+        Stuur je bestelling per e-mail naar <a href="mailto:hencopullen2@hotmail.com">hencopullen2@hotmail.com</a>.
+      `;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✉️ \u00a0Bestelling plaatsen';
+    }
+  }
+</script>
+</body>
+</html>
