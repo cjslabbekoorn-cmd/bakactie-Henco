@@ -141,7 +141,7 @@ function kaart(o, idx) {
   var isTikkie = betaling.toLowerCase().indexOf('tikkie') >= 0;
 
   var producten = '';
-  if (kruid > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F9C2; Kruidkoek x' + kruid + '</span><span class="regel-prijs">&euro; ' + (kruid * 7.5).toFixed(2).replace('.', ',') + '</span></div>';
+  if (kruid > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F96E; Kruidkoek x' + kruid + '</span><span class="regel-prijs">&euro; ' + (kruid * 7.5).toFixed(2).replace('.', ',') + '</span></div>';
   if (cup > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F9C1; Cupcakes x' + cup + (smaken ? '<span class="smaak">' + smaken + '</span>' : '') + '</span><span class="regel-prijs">&euro; ' + (cup * 6).toFixed(2).replace('.', ',') + '</span></div>';
   if (donatie > 0) producten += '<div class="regel"><span class="regel-naam">&#x1F499; Extra donatie</span><span class="regel-prijs" style="color:#1a6e3c">&euro; ' + donatie.toFixed(2).replace('.', ',') + '</span></div>';
 
