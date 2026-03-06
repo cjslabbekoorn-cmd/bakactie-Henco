@@ -452,6 +452,23 @@
       <input type="text" id="phone" placeholder="06 – xxxxxxxx">
     </div>
     <div class="form-row">
+      <label>Postcode <span style="font-weight:400;color:#888;font-size:0.85rem;text-transform:none">(optioneel)</span></label>
+      <input type="text" id="postcode" placeholder="bijv. 4382 AA of 8032 AB" maxlength="7" oninput="checkPostcode(this.value)" autocomplete="postal-code">
+      <div id="msg-zeeland" style="display:none;margin-top:8px;padding:10px 14px;background:#e8f5e9;border-radius:8px;color:#1a6e3c;font-size:0.85rem;font-weight:600">
+        &#x2705; Zeeuwse postcode herkend &#x2013; levering op zaterdag 29 maart geselecteerd!
+      </div>
+    </div>
+
+    <div class="form-row" id="row-locatie" style="display:none">
+      <label>Ophaallocatie Zwolle *</label>
+      <select id="locatie">
+        <option value="">&#x2014; Kies een locatie &#x2014;</option>
+        <option value="Punterdiep, Zwolle">Punterdiep, Zwolle</option>
+        <option value="Flora Bilderbeekstraat, Zwolle">Flora Bilderbeekstraat, Zwolle</option>
+      </select>
+    </div>
+
+    <div class="form-row">
       <label>Jouw bestelling</label>
 
       <div class="qty-row" style="margin-bottom: 10px;">
@@ -495,6 +512,7 @@
           <option value="Donderdag 19 maart">Donderdag 19 maart</option>
           <option value="Vrijdag 20 maart">Vrijdag 20 maart</option>
           <option value="Zaterdag 21 maart">Zaterdag 21 maart</option>
+          <option value="Levering Zeeland - zaterdag 29 maart" id="opt-zeeland" style="display:none">🚚 Levering Zeeland – zaterdag 29 maart</option>
         </select>
       </div>
       <div class="form-row">
@@ -567,6 +585,27 @@
   const GH_OWNER = 'cjslabbekoorn-cmd';
   const GH_REPO  = 'bakactie-Henco';
   const GH_FILE  = 'bestellingen.csv';
+  function checkPostcode(val) {
+    const clean = val.replace(/\s/g, '').toUpperCase();
+    const isZeeland = /^(43|44|45)\d{2}/.test(clean);
+    const is8032    = /^8032/.test(clean);
+    // Reset
+    document.getElementById('opt-zeeland').style.display = 'none';
+    document.getElementById('msg-zeeland').style.display = 'none';
+    document.getElementById('row-locatie').style.display = 'none';
+    document.getElementById('row-dag-dagdeel').style.display = '';
+    if (document.getElementById('day').value === 'za-29') document.getElementById('day').value = '';
+    if (isZeeland) {
+      document.getElementById('opt-zeeland').style.display = '';
+      document.getElementById('msg-zeeland').style.display = 'block';
+      document.getElementById('row-dag-dagdeel').style.display = 'none';
+      document.getElementById('day').value = 'za-29';
+      document.getElementById('dagdeel').value = 'middag';
+    } else if (is8032) {
+      document.getElementById('row-locatie').style.display = 'block';
+    }
+  }
+
   async function submitOrder() {
     const fname    = document.getElementById('fname').value.trim();
     const lname    = document.getElementById('lname').value.trim();
@@ -577,6 +616,7 @@
     const payment  = document.getElementById('payment').value;
     const donation = parseFloat(document.getElementById('donation').value) || 0;
     const notes    = document.getElementById('notes').value.trim();
+    const locatie   = document.getElementById('locatie').value;
     const totalQty = qty.kruid + qty.cup;
 
     if (!fname || !lname)              { alert('Vul je naam in.'); return; }
@@ -596,6 +636,9 @@
     if (!payment) { alert('Kies je betaalvoorkeur.'); return; }
     if (payment === 'tikkie vooraf' && !phone) {
       alert('Vul je telefoonnummer in — dit is nodig om het tikkie te sturen.'); return;
+    }
+    if (document.getElementById('row-locatie').style.display !== 'none' && !locatie) {
+      alert('Kies een ophaallocatie.'); return;
     }
 
     let smaken = '';
@@ -625,7 +668,7 @@
       escape(dayText),
       escape(dagdeel),
       escape(payment),
-      escape(notes),
+      escape(locatie ? 'Locatie: ' + locatie + (notes ? ' | ' + notes : '') : notes),
       donation > 0 ? donation.toFixed(2) : ''
     ].join(',');
 
