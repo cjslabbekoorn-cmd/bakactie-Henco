@@ -317,7 +317,7 @@
   <select id="filter-betaling" onchange="renderPakbonnen()">
     <option value="">Alles</option>
     <option value="tikkie">Tikkie (betaald)</option>
-    <option value="contant">Contant (nog betalen)</option>
+    <option value="op locatie">Contant (nog betalen)</option>
   </select>
   <label>Zoek:</label>
   <input type="text" id="filter-zoek" placeholder="Naam of email..." oninput="renderPakbonnen()" style="width:200px">
@@ -391,7 +391,7 @@ function renderPakbonnen() {
   const filtered = orders.filter(o => {
     if (dag && !(o[8] || '').toLowerCase().includes(dag)) return false;
     if (betaling === 'tikkie' && !(o[10] || '').toLowerCase().includes('tikkie')) return false;
-    if (betaling === 'contant' && !(o[10] || '').toLowerCase().includes('contant')) return false;
+    if (betaling === 'op locatie' && (o[10] || '').toLowerCase().includes('tikkie')) return false;
     if (zoek && !(o[1] || '').toLowerCase().includes(zoek) && !(o[2] || '').toLowerCase().includes(zoek)) return false;
     return true;
   });
@@ -399,7 +399,7 @@ function renderPakbonnen() {
   // Stats
   const totaal = filtered.reduce((s, o) => s + (parseFloat(o[7]) || 0), 0);
   const tikkieCount = filtered.filter(o => (o[10] || '').toLowerCase().includes('tikkie')).length;
-  const contantCount = filtered.filter(o => (o[10] || '').toLowerCase().includes('contant')).length;
+  const contantCount = filtered.filter(o => !(o[10] || '').toLowerCase().includes('tikkie')).length;
   const donaties = filtered.reduce((s, o) => s + (parseFloat(o[12]) || 0), 0);
 
   document.getElementById('stats-bar').innerHTML = `
