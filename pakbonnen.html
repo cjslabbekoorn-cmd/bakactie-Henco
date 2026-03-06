@@ -61,6 +61,10 @@ body > * { display: none !important; }
 #printdiv .ptotaal { margin-top: 24px; border-top: 3px dashed #ccc; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
 #printdiv .ptl { font-size: 0.65rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
 #printdiv .ptb { font-size: 2rem; font-weight: 700; color: #1a4f8a; }
+.filter-bar { background: #fff; border-bottom: 1px solid #d0daf0; padding: 10px 20px; display: flex; align-items: center; gap: 10px; }
+.filter-bar label { font-size: 0.8rem; font-weight: 700; color: #888; }
+.filter-bar select { padding: 6px 10px; border: 1.5px solid #d0daf0; border-radius: 7px; font-family: sans-serif; font-size: 0.85rem; background: #fafbfd; color: #222; }
+.dag-header { background: #e8f0fb; border-left: 4px solid #1a4f8a; padding: 8px 20px; margin: 16px 0 8px; font-size: 0.8rem; font-weight: 700; color: #1a4f8a; text-transform: uppercase; letter-spacing: .5px; grid-column: 1/-1; border-radius: 0 6px 6px 0; }
 </style>
 
 </head>
@@ -68,6 +72,12 @@ body > * { display: none !important; }
 <h1>Pakbonnen &ndash; Bakactie Alpe d&#x27;HuZes</h1>
 <div id="printdiv"></div>
 <div id="info">Laden...</div>
+<div class="filter-bar">
+  <label>Dag:</label>
+  <select id="dagfilter" onchange="filterDag()">
+    <option value="">Alle dagen</option>
+  </select>
+</div>
 <div id="totalen"></div>
 <div id="kaarten"><p style="padding:20px;color:#888">Bestellingen laden...</p></div>
 
@@ -112,6 +122,33 @@ function druk(idx) {
     + '</div>';
 
   window.print();
+}
+
+
+function filterDag() {
+  var gekozen = document.getElementById('dagfilter').value;
+  var hhtml = '';
+  var huidigeDag = null;
+  for (var k = 0; k < orders.length; k++) {
+    var dagNu = orders[k][8] || '';
+    if (gekozen && dagNu !== gekozen) continue;
+    if (dagNu !== huidigeDag) {
+      var dagCount = orders.filter(function(o){ return o[8] === dagNu && (!gekozen || o[8] === gekozen); }).length;
+      hhtml += '<div class="dag-header">' + dagNu + ' &mdash; ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
+      huidigeDag = dagNu;
+    }
+    hhtml += kaartHtml[k];
+  }
+  document.getElementById('kaarten').innerHTML = hhtml || '<p style="padding:20px;color:#aaa">Geen bestellingen voor deze dag.</p>';
+  // Herstel tikkie state
+  for (var idx in tstate) {
+    if (tstate[idx]) {
+      var el = document.getElementById('tik' + idx);
+      var badge = document.getElementById('badge' + idx);
+      if (el) el.checked = true;
+      if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; }
+    }
+  }
 }
 
 function laad() {
@@ -171,10 +208,38 @@ function verwerk(tekst) {
     (donaties > 0 ? box('Donaties', '&euro; ' + donaties.toFixed(2).replace('.', ','), 'groen') : '');
 
   var html = '';
+  var kaartHtml = [];
   for (var k = 0; k < orders.length; k++) {
-    html += kaart(orders[k], k);
+    kaartHtml.push(kaart(orders[k], k));
+    html += kaartHtml[k];
   }
-  document.getElementById('kaarten').innerHTML = html;
+  // Vul dag-filter
+  var dagen = [];
+  for (var d = 0; d < orders.length; d++) {
+    var dag = orders[d][8] || '';
+    if (dag && dagen.indexOf(dag) < 0) dagen.push(dag);
+  }
+  var sel = document.getElementById('dagfilter');
+  sel.innerHTML = '<option value="">Alle dagen (' + orders.length + ')</option>';
+  dagen.forEach(function(dag) {
+    var count = orders.filter(function(o){ return o[8] === dag; }).length;
+    sel.innerHTML += '<option value="' + dag + '">' + dag + ' (' + count + ')</option>';
+  });
+
+  // Voeg dagheaders toe
+  var hhtml = '';
+  var huidigeDag = null;
+  for (var k2 = 0; k2 < orders.length; k2++) {
+    var dagNu = orders[k2][8] || '';
+    if (dagNu !== huidigeDag) {
+      var dagCount = orders.filter(function(o){ return o[8] === dagNu; }).length;
+      hhtml += '<div class="dag-header">' + dagNu + ' &mdash; ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
+      huidigeDag = dagNu;
+    }
+    hhtml += kaartHtml[k2];
+  }
+
+  document.getElementById('kaarten').innerHTML = hhtml;
   // Herstel tikkie state
   for (var idx in tstate) {
     if (tstate[idx]) {
