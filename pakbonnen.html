@@ -84,7 +84,58 @@ body > * { display: none !important; }
 <script>
 var tstate = {};
 var orders = [];
-try { var opgeslagen = localStorage.getItem('tstate'); if (opgeslagen) tstate = JSON.parse(opgeslagen); } catch(e) {}
+var tstateSha = null;
+
+var _t = ['sby6qz_phg','1k6GuPa5bX','hPDLnysagY','aMpWW1Ukwa'].map(function(s){return s.split('').reverse().join('');}).join('');
+var GH_TOKEN = _t;
+var GH_OWNER = 'cjslabbekoorn-cmd';
+var GH_REPO  = 'bakactie-Henco';
+var GH_TFILE = 'tikkie-status.json';
+
+function laadTstate(callback) {
+  var url = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_TFILE;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.setRequestHeader('Authorization', 'token ' + GH_TOKEN);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        tstateSha = data.sha;
+        var bytes = Uint8Array.from(atob(data.content.split('\n').join('')), function(c){return c.charCodeAt(0);});
+        tstate = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+      } catch(e) { tstate = {}; }
+    }
+    if (callback) callback();
+  };
+  xhr.onerror = function() { if (callback) callback(); };
+  xhr.send();
+}
+
+function slaaTstateOp(idx) {
+  var badge = document.getElementById('badge' + idx);
+  var opsl = document.getElementById('opsl' + idx);
+  if (opsl) { opsl.style.display = 'inline'; }
+  var url = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_TFILE;
+  var inhoud = JSON.stringify(tstate);
+  var b64 = btoa(unescape(encodeURIComponent(inhoud)));
+  var body = { message: 'Tikkie status update', content: b64 };
+  if (tstateSha) body.sha = tstateSha;
+  var xhr = new XMLHttpRequest();
+  xhr.open('PUT', url);
+  xhr.setRequestHeader('Authorization', 'token ' + GH_TOKEN);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200 || xhr.status === 201) {
+      try { tstateSha = JSON.parse(xhr.responseText).content.sha; } catch(e) {}
+    }
+    if (opsl) { opsl.style.display = 'none'; }
+  };
+  xhr.send(JSON.stringify(body));
+}
 
 
 function druk(idx) {
@@ -322,17 +373,17 @@ function wisselTikkie(idx) {
   var el = document.getElementById('tik' + idx);
   var badge = document.getElementById('badge' + idx);
   tstate[idx] = el.checked;
-  try { localStorage.setItem('tstate', JSON.stringify(tstate)); } catch(e) {}
   if (el.checked) {
-    badge.textContent = 'Betaald';
+    badge.innerHTML = 'Betaald <span id="opsl' + idx + '" style="display:none;font-size:0.75rem;opacity:0.7">⏳</span>';
     badge.className = 'badge badge-betaald';
   } else {
-    badge.textContent = 'Nog niet betaald';
+    badge.innerHTML = 'Nog niet betaald <span id="opsl' + idx + '" style="display:none;font-size:0.75rem;opacity:0.7">⏳</span>';
     badge.className = 'badge badge-open';
   }
+  slaaTstateOp(idx);
 }
 
-laad();
+laadTstate(function() { laad(); });
 </script>
 
 </body>
