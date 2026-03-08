@@ -61,7 +61,9 @@ body > * { display: none !important; }
 #printdiv .ptotaal { margin-top: 24px; border-top: 3px dashed #ccc; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
 #printdiv .ptl { font-size: 0.65rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
 #printdiv .ptb { font-size: 2rem; font-weight: 700; color: #1a4f8a; }
-.filter-bar { background: #fff; border-bottom: 1px solid #d0daf0; padding: 10px 20px; display: flex; align-items: center; gap: 10px; }
+.filter-bar { background: #fff; border-top: 1px solid #d0daf0; border-bottom: 1px solid #d0daf0; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; }
+.filter-bar > div { max-width: 50%; }
+.filter-bar select { width: 100%; }
 .filter-bar label { font-size: 0.8rem; font-weight: 700; color: #888; }
 .filter-bar select { padding: 6px 10px; border: 1.5px solid #d0daf0; border-radius: 7px; font-family: sans-serif; font-size: 0.85rem; background: #fafbfd; color: #222; }
 .dag-header { background: #e8f0fb; border-left: 4px solid #1a4f8a; padding: 8px 20px; margin: 16px 0 8px; font-size: 0.8rem; font-weight: 700; color: #1a4f8a; text-transform: uppercase; letter-spacing: .5px; grid-column: 1/-1; border-radius: 0 6px 6px 0; }
