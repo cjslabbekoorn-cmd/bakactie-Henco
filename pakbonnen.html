@@ -74,15 +74,18 @@ body > * { display: none !important; }
 <div id="info">Laden...</div>
 <div class="filter-bar">
   <div style="display:flex;align-items:center;gap:8px">
+    <label>Dag:</label>
+    <select id="dagfilter" onchange="sorteerEnToon()">
+      <option value="">Alle dagen</option>
+    </select>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
     <label>Sorteren:</label>
     <select id="sorteer" onchange="sorteerEnToon()">
+      <option value="dag">Op afleverdag</option>
       <option value="nieuw">Nieuwste eerst</option>
       <option value="oud">Oudste eerst</option>
     </select>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <label>Dag:</label>
-    <div class="dag-check-groep" id="dag-checkboxes"></div>
   </div>
 </div>
 <div id="totalen"></div>
@@ -186,28 +189,46 @@ function druk(idx) {
 
 function sorteerEnToon() {
   var modus = document.getElementById('sorteer').value;
-  // Lees actieve dag-checkboxes
-  var actieveDagen = [];
-  var cbs = document.getElementById('dag-checkboxes').querySelectorAll('input[type=checkbox]');
-  for (var c = 0; c < cbs.length; c++) {
-    if (cbs[c].checked) actieveDagen.push(cbs[c].value);
-  }
+  var gekozenDag = document.getElementById('dagfilter').value;
+  var dagvolgorde = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag', 'Levering'];
+
   var gesorteerd = orders.map(function(o, i) { return { o: o, i: i }; });
-  // Filter op geselecteerde dagen
-  if (actieveDagen.length > 0) {
-    gesorteerd = gesorteerd.filter(function(x) { return actieveDagen.indexOf(x.o[8] || '') >= 0; });
+
+  // Dag-filter
+  if (gekozenDag) {
+    gesorteerd = gesorteerd.filter(function(x) { return (x.o[8] || '') === gekozenDag; });
   }
+
   // Sortering
-  if (modus === 'nieuw') {
+  if (modus === 'dag') {
+    gesorteerd.sort(function(a, b) {
+      var iA = dagvolgorde.indexOf((a.o[8] || '').split(' ')[0]); if (iA < 0) iA = 99;
+      var iB = dagvolgorde.indexOf((b.o[8] || '').split(' ')[0]); if (iB < 0) iB = 99;
+      return iA - iB;
+    });
+  } else if (modus === 'nieuw') {
     gesorteerd.sort(function(a, b) { return b.i - a.i; });
   } else {
     gesorteerd.sort(function(a, b) { return a.i - b.i; });
   }
+
+  // Render met dag-headers als sortering op dag
   var hhtml = '';
+  var huidigeDag = null;
   for (var k = 0; k < gesorteerd.length; k++) {
-    hhtml += kaartHtml[gesorteerd[k].i];
+    var item = gesorteerd[k];
+    if (modus === 'dag') {
+      var dagNu = item.o[8] || '';
+      if (dagNu !== huidigeDag) {
+        var dagCount = gesorteerd.filter(function(x){ return x.o[8] === dagNu; }).length;
+        hhtml += '<div class="dag-header">' + dagNu + ' &mdash; ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
+        huidigeDag = dagNu;
+      }
+    }
+    hhtml += kaartHtml[item.i];
   }
   document.getElementById('kaarten').innerHTML = hhtml || '<p style="padding:20px;color:#aaa">Geen bestellingen voor deze selectie.</p>';
+
   // Herstel tikkie state
   for (var idx in tstate) {
     if (tstate[idx]) {
@@ -284,17 +305,23 @@ function verwerk(tekst) {
     kaartHtml.push(kaart(orders[k], k));
     html += kaartHtml[k];
   }
-  // Vul dag-checkboxes
-  var dagCb = document.getElementById('dag-checkboxes');
-  dagCb.innerHTML = '';
+  // Vul dag-filter dropdown
+  var dagvolgorde = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag', 'Levering'];
   var dagenGezien = [];
   for (var d = 0; d < orders.length; d++) {
     var dagD = orders[d][8] || '';
     if (dagD && dagenGezien.indexOf(dagD) < 0) dagenGezien.push(dagD);
   }
+  dagenGezien.sort(function(a, b) {
+    var iA = dagvolgorde.indexOf(a.split(' ')[0]); if (iA < 0) iA = 99;
+    var iB = dagvolgorde.indexOf(b.split(' ')[0]); if (iB < 0) iB = 99;
+    return iA - iB;
+  });
+  var sel = document.getElementById('dagfilter');
+  sel.innerHTML = '<option value="">Alle dagen</option>';
   dagenGezien.forEach(function(dag) {
-    var id = 'cb-' + dag.replace(/\s/g, '-');
-    dagCb.innerHTML += '<label><input type="checkbox" id="' + id + '" value="' + dag + '" checked onchange="sorteerEnToon()"> ' + dag + '</label>';
+    var count = orders.filter(function(o){ return o[8] === dag; }).length;
+    sel.innerHTML += '<option value="' + dag + '">' + dag + ' (' + count + ')</option>';
   });
 
   sorteerEnToon();
