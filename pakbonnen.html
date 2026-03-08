@@ -73,9 +73,10 @@ body > * { display: none !important; }
 <div id="printdiv"></div>
 <div id="info">Laden...</div>
 <div class="filter-bar">
-  <label>Dag:</label>
-  <select id="dagfilter" onchange="filterDag()">
-    <option value="">Alle dagen</option>
+  <label>Sorteren op:</label>
+  <select id="sorteer" onchange="sorteerEnToon()">
+    <option value="dag">Op afleverdag (Ma → Za)</option>
+    <option value="nieuw">Nieuwste bestelling eerst</option>
   </select>
 </div>
 <div id="totalen"></div>
@@ -84,6 +85,7 @@ body > * { display: none !important; }
 <script>
 var tstate = {};
 var orders = [];
+var kaartHtml = [];
 var tstateSha = null;
 
 var _t = ['sby6qz_phg','1k6GuPa5bX','hPDLnysagY','aMpWW1Ukwa'].map(function(s){return s.split('').reverse().join('');}).join('');
@@ -176,21 +178,35 @@ function druk(idx) {
 }
 
 
-function filterDag() {
-  var gekozen = document.getElementById('dagfilter').value;
+function sorteerEnToon() {
+  var modus = document.getElementById('sorteer').value;
+  var dagvolgorde = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag', 'Levering'];
+  var gesorteerd = orders.map(function(o, i) { return { o: o, i: i }; });
+  if (modus === 'dag') {
+    gesorteerd.sort(function(a, b) {
+      var dA = dagvolgorde.indexOf((a.o[8] || '').split(' ')[0]);
+      var dB = dagvolgorde.indexOf((b.o[8] || '').split(' ')[0]);
+      if (dA < 0) dA = 99; if (dB < 0) dB = 99;
+      return dA - dB;
+    });
+  } else {
+    gesorteerd.sort(function(a, b) { return b.i - a.i; });
+  }
   var hhtml = '';
   var huidigeDag = null;
-  for (var k = 0; k < orders.length; k++) {
-    var dagNu = orders[k][8] || '';
-    if (gekozen && dagNu !== gekozen) continue;
-    if (dagNu !== huidigeDag) {
-      var dagCount = orders.filter(function(o){ return o[8] === dagNu && (!gekozen || o[8] === gekozen); }).length;
-      hhtml += '<div class="dag-header">' + dagNu + ' &mdash; ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
-      huidigeDag = dagNu;
+  for (var k = 0; k < gesorteerd.length; k++) {
+    var item = gesorteerd[k];
+    if (modus === 'dag') {
+      var dagNu = item.o[8] || '';
+      if (dagNu !== huidigeDag) {
+        var dagCount = gesorteerd.filter(function(x){ return x.o[8] === dagNu; }).length;
+        hhtml += '<div class="dag-header">' + dagNu + ' — ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
+        huidigeDag = dagNu;
+      }
     }
-    hhtml += kaartHtml[k];
+    hhtml += kaartHtml[item.i];
   }
-  document.getElementById('kaarten').innerHTML = hhtml || '<p style="padding:20px;color:#aaa">Geen bestellingen voor deze dag.</p>';
+  document.getElementById('kaarten').innerHTML = hhtml;
   // Herstel tikkie state
   for (var idx in tstate) {
     if (tstate[idx]) {
@@ -262,38 +278,12 @@ function verwerk(tekst) {
     (donaties > 0 ? box('Donaties', '&euro; ' + donaties.toFixed(2).replace('.', ','), 'groen') : '');
 
   var html = '';
-  var kaartHtml = [];
+  kaartHtml = [];
   for (var k = 0; k < orders.length; k++) {
     kaartHtml.push(kaart(orders[k], k));
     html += kaartHtml[k];
   }
-  // Vul dag-filter
-  var dagen = [];
-  for (var d = 0; d < orders.length; d++) {
-    var dag = orders[d][8] || '';
-    if (dag && dagen.indexOf(dag) < 0) dagen.push(dag);
-  }
-  var sel = document.getElementById('dagfilter');
-  sel.innerHTML = '<option value="">Alle dagen (' + orders.length + ')</option>';
-  dagen.forEach(function(dag) {
-    var count = orders.filter(function(o){ return o[8] === dag; }).length;
-    sel.innerHTML += '<option value="' + dag + '">' + dag + ' (' + count + ')</option>';
-  });
-
-  // Voeg dagheaders toe
-  var hhtml = '';
-  var huidigeDag = null;
-  for (var k2 = 0; k2 < orders.length; k2++) {
-    var dagNu = orders[k2][8] || '';
-    if (dagNu !== huidigeDag) {
-      var dagCount = orders.filter(function(o){ return o[8] === dagNu; }).length;
-      hhtml += '<div class="dag-header">' + dagNu + ' &mdash; ' + dagCount + ' bestelling' + (dagCount !== 1 ? 'en' : '') + '</div>';
-      huidigeDag = dagNu;
-    }
-    hhtml += kaartHtml[k2];
-  }
-
-  document.getElementById('kaarten').innerHTML = hhtml;
+  sorteerEnToon();
   // Herstel tikkie state
   for (var idx in tstate) {
     if (tstate[idx]) {
@@ -325,7 +315,13 @@ function kaart(o, idx) {
   var kruid = parseInt(o[4]) || 0, cup = parseInt(o[5]) || 0, smaken = o[6] || '';
   var totaal = parseFloat(o[7]) || 0;
   var dag = o[8] || '', dagdeel = o[9] || '', betaling = o[10] || '';
-  var opm = o[11] || '', donatie = parseFloat(o[12]) || 0;
+  var opmRaw = o[11] || '', donatie = parseFloat(o[12]) || 0;
+  var locatie = '', opm = opmRaw;
+  if (opmRaw.indexOf('Locatie: ') === 0) {
+    var pipe = opmRaw.indexOf(' | ');
+    if (pipe >= 0) { locatie = opmRaw.substring(9, pipe); opm = opmRaw.substring(pipe + 3); }
+    else { locatie = opmRaw.substring(9); opm = ''; }
+  }
   var isTikkie = betaling.toLowerCase().indexOf('tikkie') >= 0;
 
   var producten = '';
@@ -354,6 +350,7 @@ function kaart(o, idx) {
     + '<div class="kaart-body">'
     + producten
     + '<div class="meta">'
+    + (locatie ? '<div><div class="meta-label">Ophaallocatie</div><div class="meta-val" style="font-weight:600;color:#1a4f8a">' + locatie + '</div></div>' : '')
     + '<div><div class="meta-label">Afhaaldag</div><div class="meta-val">' + dag + '</div></div>'
     + '<div><div class="meta-label">Dagdeel</div><div class="meta-val">' + dagdeel + '</div></div>'
     + '<div><div class="meta-label">Email</div><div class="meta-val" style="font-size:0.75rem">' + email + '</div></div>'
