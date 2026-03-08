@@ -86,6 +86,8 @@ body > * { display: none !important; }
       <option value="dag">Op afleverdag</option>
       <option value="nieuw">Nieuwste eerst</option>
       <option value="oud">Oudste eerst</option>
+      <option value="az">Naam A → Z</option>
+      <option value="za">Naam Z → A</option>
     </select>
   </div>
 </div>
@@ -208,6 +210,10 @@ function sorteerEnToon() {
     });
   } else if (modus === 'nieuw') {
     gesorteerd.sort(function(a, b) { return b.i - a.i; });
+  } else if (modus === 'az') {
+    gesorteerd.sort(function(a, b) { return (a.o[1] || '').localeCompare(b.o[1] || '', 'nl'); });
+  } else if (modus === 'za') {
+    gesorteerd.sort(function(a, b) { return (b.o[1] || '').localeCompare(a.o[1] || '', 'nl'); });
   } else {
     gesorteerd.sort(function(a, b) { return a.i - b.i; });
   }
