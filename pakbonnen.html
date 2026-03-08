@@ -196,8 +196,7 @@ function filterDag() {
     if (tstate[idx]) {
       var el = document.getElementById('tik' + idx);
       var badge = document.getElementById('badge' + idx);
-      if (el) el.checked = true;
-      if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; }
+      if (el) { el.checked = true; if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; } }
     }
   }
 }
@@ -296,8 +295,7 @@ function verwerk(tekst) {
     if (tstate[idx]) {
       var el = document.getElementById('tik' + idx);
       var badge = document.getElementById('badge' + idx);
-      if (el) el.checked = true;
-      if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; }
+      if (el) { el.checked = true; if (badge) { badge.textContent = 'Betaald'; badge.className = 'badge badge-betaald'; } }
     }
   }
 }
