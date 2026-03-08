@@ -242,10 +242,12 @@ function verwerk(tekst) {
 
   document.getElementById('info').textContent = orders.length + ' bestellingen geladen';
 
-  var totaal = 0, tikkieAantal = 0, contantAantal = 0, donaties = 0;
+  var totaal = 0, tikkieAantal = 0, contantAantal = 0, donaties = 0, kruidTotaal = 0, cupTotaal = 0;
   for (var j = 0; j < orders.length; j++) {
     totaal += parseFloat(orders[j][7]) || 0;
     donaties += parseFloat(orders[j][12]) || 0;
+    kruidTotaal += parseInt(orders[j][4]) || 0;
+    cupTotaal += parseInt(orders[j][5]) || 0;
     if ((orders[j][10] || '').toLowerCase().indexOf('tikkie') >= 0) tikkieAantal++;
     else contantAantal++;
   }
@@ -253,6 +255,8 @@ function verwerk(tekst) {
   document.getElementById('totalen').innerHTML =
     box('Bestellingen', orders.length, '') +
     box('Totaal', '&euro; ' + totaal.toFixed(2).replace('.', ','), 'oranje') +
+    box('&#x1F96E; Kruidkoek', kruidTotaal, '') +
+    box('&#x1F9C1; Cupcakes', cupTotaal, '') +
     box('Tikkie', tikkieAantal, '') +
     box('Contant', contantAantal, '') +
     (donaties > 0 ? box('Donaties', '&euro; ' + donaties.toFixed(2).replace('.', ','), 'groen') : '');
